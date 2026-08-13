@@ -3,7 +3,7 @@
 **University of Ghana · College of Basic and Applied Sciences · School of Engineering Sciences**
 **Department of Computer Engineering · First Semester 2025/2026**
 
-Author: **Botchway Daniel** (22128981)
+Author: **Botchway Daniel** (22381577)
 
 ---
 
