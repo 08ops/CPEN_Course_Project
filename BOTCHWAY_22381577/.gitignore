@@ -1,0 +1,39 @@
+# ---- dependencies ----------------------------------------------------------
+node_modules/
+.pnp
+.pnp.js
+
+# ---- build output ----------------------------------------------------------
+.next/
+out/
+dist/
+build/
+
+# ---- environment: never commit real credentials ---------------------------
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ---- logs ------------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- testing / tooling -----------------------------------------------------
+coverage/
+.nyc_output/
+*.tsbuildinfo
+next-env.d.ts
+.eslintcache
+
+# ---- editors and OS --------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# ---- deployment ------------------------------------------------------------
+.vercel

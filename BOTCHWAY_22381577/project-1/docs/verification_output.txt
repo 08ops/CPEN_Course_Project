@@ -1,0 +1,366 @@
+
+################################################################
+# 1. SCHEMAS CREATED
+################################################################
+ schema_name | tables | views | functions 
+-------------+--------+-------+-----------
+ academics   |      6 |     4 |         9
+ app         |      3 |     0 |         3
+ core        |      4 |     0 |         1
+ finance     |      5 |     1 |         8
+ people      |      5 |     1 |         2
+(5 rows)
+
+
+################################################################
+# 2. FUNCTIONALITY 1 - STUDENT PERSONAL INFORMATION
+################################################################
+ student_number |        full_name         | gender | age | programme_code | current_level | residential_status | cgpa 
+----------------+--------------------------+--------+-----+----------------+---------------+--------------------+------
+ 21045612       | Nathaniel Kwesi Otoo     | Male   |  24 | BSC-CPEN       |           400 | non-resident       | 3.78
+ 21047733       | Belinda Nana Yaa Addo    | Female |  24 | BSC-CPEN       |           400 | resident           | 3.85
+ 22128981       | Gideon Elorm Glago       | Male   |  22 | BSC-CPEN       |           200 | non-resident       | 3.62
+ 22129014       | Nana Ama Serwaa Boateng  | Female |  22 | BSC-CPEN       |           200 | resident           | 3.48
+ 22129027       | Kwabena Osei Mensah      | Male   |  22 | BSC-CPEN       |           200 | non-resident       | 3.05
+ 22129033       | Akosua Dede Quartey      | Female |  22 | BSC-CPEN       |           200 | resident           | 3.71
+ 22129048       | Yaw Antwi Boasiako       | Male   |  22 | BSC-CPEN       |           200 | non-resident       | 2.87
+ 22129055       | Efua Naa Adjeley Lamptey | Female |  22 | BSC-CPEN       |           200 | non-resident       | 3.33
+ 22129061       | Kofi Agyeman Duah        | Male   |  22 | BSC-CPEN       |           200 | resident           | 3.12
+ 22129077       | Abena Nyarko Asante      | Female |  21 | BSC-CPEN       |           200 | non-resident       | 3.55
+(10 rows)
+
+
+-- Full personal record of one student, as JSON:
+                               jsonb_pretty                                
+---------------------------------------------------------------------------
+ {                                                                        +
+     "contact": {                                                         +
+         "email": "gideon.glago@st.ug.edu.gh",                            +
+         "phone": "+233 24 411 0981",                                     +
+         "alt_phone": null,                                               +
+         "postal_address": "P. O. Box LG 77, Legon, Accra",               +
+         "residential_address": "University of Ghana, Legon Campus, Accra"+
+     },                                                                   +
+     "academic": {                                                        +
+         "cgpa": 3.62,                                                    +
+         "level": 200,                                                    +
+         "status": "active",                                              +
+         "programme": "BSc Computer Engineering",                         +
+         "department": "Computer Engineering",                            +
+         "admission_date": "2022-08-08",                                  +
+         "programme_code": "BSC-CPEN",                                    +
+         "hall_of_residence": null,                                       +
+         "residential_status": "non-resident",                            +
+         "entry_qualification": "WASSCE",                                 +
+         "expected_completion": "2026-08-07"                              +
+     },                                                                   +
+     "personal": {                                                        +
+         "age": 22,                                                       +
+         "title": null,                                                   +
+         "gender": "Male",                                                +
+         "full_name": "Gideon Elorm Glago",                               +
+         "last_name": "Glago",                                            +
+         "first_name": "Gideon",                                          +
+         "home_region": "Volta",                                          +
+         "middle_name": "Elorm",                                          +
+         "national_id": "GHA-721004551-3",                                +
+         "nationality": "Ghanaian",                                       +
+         "date_of_birth": "2004-03-17",                                   +
+         "marital_status": "Single"                                       +
+     },                                                                   +
+     "student_id": 36,                                                    +
+     "next_of_kin": [                                                     +
+         {                                                                +
+             "email": "comfort.glago@gmail.com",                          +
+             "phone": "+233 24 555 7001",                                 +
+             "full_name": "Mrs. Comfort Elorm Glago",                     +
+             "is_primary": true,                                          +
+             "occupation": "Teacher",                                     +
+             "relationship": "Mother"                                     +
+         }                                                                +
+     ],                                                                   +
+     "student_number": "22128981",                                        +
+     "outstanding_balance": 1270.00                                       +
+ }
+(1 row)
+
+
+################################################################
+# 3. FUNCTIONALITY 3 - COURSE ENROLLMENT
+################################################################
+ course_code |               course_title                |    semester    | academic_year | enrolled | dropped 
+-------------+-------------------------------------------+----------------+---------------+----------+---------
+ CPEN 201    | Circuit Theory                            | First Semester | 2025/2026     |       32 |       0
+ CPEN 203    | Digital Systems Design                    | First Semester | 2025/2026     |       32 |       0
+ CPEN 205    | Data Structures and Algorithms            | First Semester | 2025/2026     |       32 |       0
+ CPEN 207    | Computer Architecture                     | First Semester | 2025/2026     |       32 |       0
+ CPEN 208    | Introduction to Software Engineering      | First Semester | 2025/2026     |       32 |       0
+ CPEN 401    | Advanced Embedded Systems                 | First Semester | 2025/2026     |        2 |       0
+ MATH 223    | Linear Algebra and Differential Equations | First Semester | 2025/2026     |       30 |       2
+ UGRC 210    | Academic Writing II                       | First Semester | 2025/2026     |       32 |       0
+(8 rows)
+
+
+################################################################
+# 4. FUNCTIONALITY 4 - LECTURER TO COURSE ASSIGNMENT
+################################################################
+      lecturer_name       |   academic_rank    | course_code |               course_title                | teaching_role | contact_hours_per_week | enrolled_students | assigned_tas 
+--------------------------+--------------------+-------------+-------------------------------------------+---------------+------------------------+-------------------+--------------
+ Mr. Justice Bortey       | Assistant Lecturer | CPEN 201    | Circuit Theory                            | lead_lecturer |                      3 |                32 |            0
+ Dr. Yaw Antwi            | Lecturer           | CPEN 203    | Digital Systems Design                    | lead_lecturer |                      3 |                32 |            1
+ Dr. Esi Koomson          | Lecturer           | CPEN 205    | Data Structures and Algorithms            | lead_lecturer |                      3 |                32 |            1
+ Prof. Naa Adukwei Tetteh | Professor          | CPEN 207    | Computer Architecture                     | lead_lecturer |                      3 |                32 |            1
+ Dr. Kwesi Danquah        | Senior Lecturer    | CPEN 208    | Introduction to Software Engineering      | lead_lecturer |                      3 |                32 |            2
+ Dr. Esi Koomson          | Lecturer           | CPEN 208    | Introduction to Software Engineering      | co_lecturer   |                      1 |                32 |            0
+ Prof. Naa Adukwei Tetteh | Professor          | CPEN 401    | Advanced Embedded Systems                 | lead_lecturer |                      3 |                 2 |            1
+ Dr. Mabel Ansah          | Senior Lecturer    | MATH 223    | Linear Algebra and Differential Equations | lead_lecturer |                      3 |                30 |            0
+ Mrs. Adjoa Nkansah       | Lecturer           | UGRC 210    | Academic Writing II                       | lead_lecturer |                      3 |                32 |            0
+(9 rows)
+
+
+################################################################
+# 5. FUNCTIONALITY 5 - LECTURER TO TA ASSIGNMENT
+################################################################
+      lecturer_name       |   ta_code   |     ta_name     |    ta_type    | course_code | weekly_hours | max_weekly_hours |                                 responsibility                                  
+--------------------------+-------------+-----------------+---------------+-------------+--------------+------------------+---------------------------------------------------------------------------------
+ Dr. Esi Koomson          | TA/2025/003 | Nathaniel Otoo  | undergraduate | CPEN 205    |            6 |               12 | Weekly algorithms tutorial and code review of assignments
+ Dr. Kwesi Danquah        | TA/2025/001 | Felix Aggrey    | graduate      | CPEN 208    |            8 |               20 | Laboratory supervision, Git/GitHub tutorials and grading of project submissions
+ Dr. Kwesi Danquah        | TA/2025/002 | Doris Owusuaa   | graduate      | CPEN 208    |            6 |               20 | Marking of continuous assessment and PostgreSQL laboratory support
+ Dr. Yaw Antwi            | TA/2025/004 | Belinda Addo    | undergraduate | CPEN 203    |            6 |               12 | Digital logic laboratory supervision and Verilog demonstrations
+ Prof. Naa Adukwei Tetteh | TA/2025/001 | Felix Aggrey    | graduate      | CPEN 401    |            6 |               20 | Embedded systems laboratory support
+ Prof. Naa Adukwei Tetteh | TA/2025/005 | Wisdom Ahiakpor | external      | CPEN 207    |           10 |               20 | Assembly language laboratory support and attendance records
+(6 rows)
+
+
+################################################################
+# 6. FUNCTIONALITY 2 - STUDENT FEES PAYMENTS
+################################################################
+ student_number |    full_name    | amount_billed | amount_paid | outstanding_balance | percentage_paid | bill_status | is_overdue 
+----------------+-----------------+---------------+-------------+---------------------+-----------------+-------------+------------
+ 21047733       | Belinda Addo    |       6880.00 |           0 |             6880.00 |            0.00 | overdue     | t
+ 22129033       | Akosua Quartey  |       6270.00 |           0 |             6270.00 |            0.00 | overdue     | t
+ 22129184       | Rashida Fuseini |       6270.00 |           0 |             6270.00 |            0.00 | overdue     | t
+ 22129285       | Comfort Pokuaa  |       6270.00 |           0 |             6270.00 |            0.00 | overdue     | t
+ 24500112       | Felix Aggrey    |       8220.00 |     2877.00 |             5343.00 |           35.00 | overdue     | t
+ 22129082       | Kwame Ofori     |       4470.00 |           0 |             4470.00 |            0.00 | overdue     | t
+ 22129139       | Priscilla Sowah |       4470.00 |           0 |             4470.00 |            0.00 | overdue     | t
+ 22129234       | Joseph Danso    |       4470.00 |           0 |             4470.00 |            0.00 | overdue     | t
+ 22129145       | Ibrahim Mahama  |       6270.00 |     2194.50 |             4075.50 |           35.00 | overdue     | t
+ 24500198       | Doris Owusuaa   |       8220.00 |     4932.00 |             3288.00 |           60.00 | overdue     | t
+ 22129048       | Yaw Boasiako    |       4470.00 |     1564.50 |             2905.50 |           35.00 | overdue     | t
+ 22129199       | Michael Tagoe   |       4470.00 |     1564.50 |             2905.50 |           35.00 | overdue     | t
+ 22129247       | Linda Frimpong  |       4470.00 |     1564.50 |             2905.50 |           35.00 | overdue     | t
+ 22129291       | Richmond Aidoo  |       4470.00 |     1564.50 |             2905.50 |           35.00 | overdue     | t
+ 22129253       | Samuel Lartey   |       6270.00 |     3762.00 |             2508.00 |           60.00 | overdue     | t
+(15 rows)
+
+
+################################################################
+# 7. *** REQUIRED DELIVERABLE ***
+#    finance.fn_outstanding_fees_json() - OUTSTANDING FEES FOR
+#    EACH STUDENT, RETURNED AS A JSON ARRAY
+################################################################
+
+-- 7a. Confirm the return value really is a JSON array:
+ json_type | elements_in_array 
+-----------+-------------------
+ array     |                36
+(1 row)
+
+
+-- 7b. The first two elements of the array, pretty printed:
+                       jsonb_pretty                       
+----------------------------------------------------------
+ [                                                       +
+     {                                                   +
+         "bills": [                                      +
+             {                                           +
+                 "balance": 6880.00,                     +
+                 "bill_id": 3,                           +
+                 "due_date": "2025-10-31",               +
+                 "is_overdue": true,                     +
+                 "amount_paid": 0.00,                    +
+                 "bill_status": "overdue",               +
+                 "academic_year": "2025/2026",           +
+                 "amount_billed": 6880.00,               +
+                 "bill_reference": "BILL-20252026-00003",+
+                 "payments_recorded": 0                  +
+             }                                           +
+         ],                                              +
+         "email": "belinda.addo@st.ug.edu.gh",           +
+         "level": 400,                                   +
+         "phone": "+233 20 745 3334",                    +
+         "currency": "GHS",                              +
+         "full_name": "Belinda Nana Yaa Addo",           +
+         "programme": "BSc Computer Engineering",        +
+         "bill_count": 1,                                +
+         "student_id": 3,                                +
+         "total_paid": 0.00,                             +
+         "total_billed": 6880.00,                        +
+         "payment_status": "NO PAYMENT",                 +
+         "programme_code": "BSC-CPEN",                   +
+         "student_number": "21047733",                   +
+         "student_status": "active",                     +
+         "percentage_paid": 0.00,                        +
+         "last_payment_date": null,                      +
+         "residential_status": "resident",               +
+         "outstanding_balance": 6880.00                  +
+     },                                                  +
+     {                                                   +
+         "bills": [                                      +
+             {                                           +
+                 "balance": 6270.00,                     +
+                 "bill_id": 33,                          +
+                 "due_date": "2025-10-31",               +
+                 "is_overdue": true,                     +
+                 "amount_paid": 0.00,                    +
+                 "bill_status": "overdue",               +
+                 "academic_year": "2025/2026",           +
+                 "amount_billed": 6270.00,               +
+                 "bill_reference": "BILL-20252026-00033",+
+                 "payments_recorded": 0                  +
+             }                                           +
+         ],                                              +
+         "email": "akosua.quartey@st.ug.edu.gh",         +
+         "level": 200,                                   +
+         "phone": "+233 55 220 0304",                    +
+         "currency": "GHS",                              +
+         "full_name": "Akosua Dede Quartey",             +
+         "programme": "BSc Computer Engineering",        +
+         "bill_count": 1,                                +
+         "student_id": 33,                               +
+         "total_paid": 0.00,                             +
+         "total_billed": 6270.00,                        +
+         "payment_status": "NO PAYMENT",                 +
+         "programme_code": "BSC-CPEN",                   +
+         "student_number": "22129033",                   +
+         "student_status": "active",                     +
+         "percentage_paid": 0.00,                        +
+         "last_payment_date": null,                      +
+         "residential_status": "resident",               +
+         "outstanding_balance": 6270.00                  +
+     }                                                   +
+ ]
+(1 row)
+
+
+-- 7c. The array flattened back into rows, to prove the numbers add up:
+ student_number |         full_name         | billed  |  paid   | outstanding |   status   
+----------------+---------------------------+---------+---------+-------------+------------
+ 21047733       | Belinda Nana Yaa Addo     | 6880.00 |    0.00 |     6880.00 | NO PAYMENT
+ 22129184       | Rashida Alhassan Fuseini  | 6270.00 |    0.00 |     6270.00 | NO PAYMENT
+ 22129285       | Comfort Abena Pokuaa      | 6270.00 |    0.00 |     6270.00 | NO PAYMENT
+ 22129033       | Akosua Dede Quartey       | 6270.00 |    0.00 |     6270.00 | NO PAYMENT
+ 24500112       | Felix Kwame Aggrey        | 8220.00 | 2877.00 |     5343.00 | PART PAID
+ 22129139       | Priscilla Akweley Sowah   | 4470.00 |    0.00 |     4470.00 | NO PAYMENT
+ 22129082       | Kwame Nkrumah Ofori       | 4470.00 |    0.00 |     4470.00 | NO PAYMENT
+ 22129234       | Joseph Kwaku Danso        | 4470.00 |    0.00 |     4470.00 | NO PAYMENT
+ 22129145       | Ibrahim Yakubu Mahama     | 6270.00 | 2194.50 |     4075.50 | PART PAID
+ 24500198       | Doris Ama Owusuaa         | 8220.00 | 4932.00 |     3288.00 | PART PAID
+ 22129199       | Michael Nii Armah Tagoe   | 4470.00 | 1564.50 |     2905.50 | PART PAID
+ 22129247       | Linda Afriyie Frimpong    | 4470.00 | 1564.50 |     2905.50 | PART PAID
+ 22129048       | Yaw Antwi Boasiako        | 4470.00 | 1564.50 |     2905.50 | PART PAID
+ 22129291       | Richmond Kojo Aidoo       | 4470.00 | 1564.50 |     2905.50 | PART PAID
+ 22129253       | Samuel Nii Odartey Lartey | 6270.00 | 3762.00 |     2508.00 | PART PAID
+(15 rows)
+
+
+-- 7d. Independent cross-check: the same figures computed with plain SQL.
+--     A zero difference proves the function is correct.
+ students_compared | mismatches | total_difference 
+-------------------+------------+------------------
+                36 |          0 |             0.00
+(1 row)
+
+
+-- 7e. Filtered call - indebted students only:
+ students_still_owing 
+----------------------
+                   21
+(1 row)
+
+
+-- 7f. Proof that pending and reversed payments are excluded:
+ student_number |  receipt_number  | amount  |  status  | outstanding_balance 
+----------------+------------------+---------+----------+---------------------
+ 22129027       | RCPT-2025-900001 | 1500.00 | pending  |                0.00
+ 22129048       | RCPT-2025-900002 |  800.00 | reversed |             2905.50
+(2 rows)
+
+
+################################################################
+# 8. DEPARTMENT FEE SUMMARY
+################################################################
+                      jsonb_pretty                       
+---------------------------------------------------------
+ {                                                      +
+     "generated_at": "2026-08-03T20:52:49.467741+00:00",+
+     "total_billed": 191240.00,                         +
+     "students_billed": 36,                             +
+     "total_collected": 115093.50,                      +
+     "indebted_students": 21,                           +
+     "total_outstanding": 76146.50,                     +
+     "fully_paid_students": 15,                         +
+     "collection_rate_percent": 60.18                   +
+ }
+(1 row)
+
+
+################################################################
+# 9. REFERENTIAL INTEGRITY - every FK resolves, no orphans
+################################################################
+        child_table         | foreign_keys 
+----------------------------+--------------
+ programme                  |            1
+ semester                   |            1
+ student                    |            2
+ next_of_kin                |            1
+ lecturer                   |            2
+ teaching_assistant         |            3
+ course                     |            1
+ course_prerequisite        |            2
+ course_offering            |            2
+ enrollment                 |            2
+ lecturer_course_assignment |            2
+ lecturer_ta_assignment     |            4
+ fee_structure              |            2
+ fee_item                   |            1
+ student_bill               |            3
+ bill_line                  |            2
+ payment                    |            2
+ app_user                   |            1
+ user_session               |            1
+ audit_log                  |            1
+(20 rows)
+
+
+################################################################
+# 10. ALL STORED FUNCTIONS IN THE DATABASE
+################################################################
+             function_name              | returns 
+----------------------------------------+---------
+ academics.fn_assign_lecturer_to_course | json
+ academics.fn_assign_ta_to_lecturer     | json
+ academics.fn_class_list_json           | json
+ academics.fn_drop_enrollment           | json
+ academics.fn_enroll_student            | json
+ academics.fn_lecturer_workload_json    | json
+ academics.fn_student_enrollments_json  | json
+ academics.fn_ta_assignments_json       | json
+ academics.fn_validate_enrollment       | trigger
+ app.fn_dashboard_stats_json            | json
+ app.fn_register_user                   | json
+ app.fn_user_context_json               | json
+ core.fn_set_updated_at                 | trigger
+ finance.fn_fees_summary_json           | json
+ finance.fn_generate_student_bill       | json
+ finance.fn_outstanding_fees_json       | json
+ finance.fn_record_payment              | json
+ finance.fn_refresh_bill_status         | trigger
+ finance.fn_refresh_bill_total          | trigger
+ finance.fn_student_fee_statement_json  | json
+ finance.fn_student_outstanding_balance | numeric
+ people.fn_student_profile_json         | json
+ people.fn_students_json                | json
+(23 rows)
+

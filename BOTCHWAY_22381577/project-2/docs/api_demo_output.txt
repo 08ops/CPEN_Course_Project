@@ -1,0 +1,125 @@
+==================================================================
+1. LOGIN (POST /api/v1/auth/login)
+==================================================================
+{
+  "success": true,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJwZXJzb25JZCI6bnVsbCwic3R1ZGVudElkIjpudWxsLCJsZWN0dXJlcklkIjpudWxsLCJpYXQiOjE3ODU3ODgyODksImV4cCI6MTc4NTc5NTQ4OSwiYXVkIjoiY2Vkcy1jbGllbnRzIiwiaXNzIjoiY2Vkcy1hcGkifQ.jhe9keI05RWBxoIIYEzwqBpHbMDXgwkZdF4Syk07v1E",
+    "tokenType": "Bearer",
+    "expiresIn": "2h",
+    "user": {
+      "userId": 1,
+      "username": "admin",
+      "role": "admin",
+      "studentId": null,
+      "lecturerId": null
+    }
+  },
+  "meta": {
+    "timestamp": "2026-08-03T20:18:09.464Z"
+  }
+}
+
+==================================================================
+2. REQUIRED DELIVERABLE - outstanding fees as a JSON array
+   GET /api/v1/fees/outstanding
+==================================================================
+Array?          : true
+Students in array: 36
+Source function  : finance.fn_outstanding_fees_json()
+
+--- first element ---
+{
+  "student_id": 3,
+  "student_number": "21047733",
+  "full_name": "Belinda Nana Yaa Addo",
+  "email": "belinda.addo@st.ug.edu.gh",
+  "phone": "+233 20 745 3334",
+  "programme": "BSc Computer Engineering",
+  "programme_code": "BSC-CPEN",
+  "level": 400,
+  "student_status": "active",
+  "residential_status": "resident",
+  "currency": "GHS",
+  "total_billed": 6880,
+  "total_paid": 0,
+  "outstanding_balance": 6880,
+  "percentage_paid": 0,
+  "payment_status": "NO PAYMENT",
+  "last_payment_date": null,
+  "bill_count": 1,
+  "bills": [
+    {
+      "bill_id": 3,
+      "bill_reference": "BILL-20252026-00003",
+      "academic_year": "2025/2026",
+      "amount_billed": 6880,
+      "amount_paid": 0,
+      "balance": 6880,
+      "due_date": "2025-10-31",
+      "bill_status": "overdue",
+      "payments_recorded": 0,
+      "is_overdue": true
+    }
+  ]
+}
+
+==================================================================
+3. AUTHORISATION - a student is refused the staff report (403)
+==================================================================
+HTTP 403
+{
+  "success": false,
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "This endpoint requires one of these roles: admin, lecturer. Your role is student."
+  },
+  "meta": {
+    "path": "/api/v1/fees/outstanding",
+    "method": "GET",
+    "timestamp": "2026-08-03T20:18:09.744Z"
+  }
+}
+
+==================================================================
+4. FUNCTIONALITY 5 - database rule enforced through the API
+   Assigning a 12-hour TA 40 hours/week is rejected (422)
+==================================================================
+{
+  "success": false,
+  "error": {
+    "code": "CHECK_VIOLATION",
+    "message": "Assignment would put TA 3 at 40 hours/week, above the contracted maximum of 12"
+  },
+  "meta": {
+    "path": "/api/v1/teaching/ta-assignments",
+    "method": "POST",
+    "timestamp": "2026-08-03T20:18:09.793Z"
+  }
+}
+
+==================================================================
+5. VALIDATION - malformed body is rejected before touching the DB
+==================================================================
+{
+  "success": false,
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "Invalid request body.",
+    "details": [
+      {
+        "field": "amount",
+        "message": "Too small: expected number to be >0"
+      },
+      {
+        "field": "method",
+        "message": "Invalid option: expected one of \"bank_transfer\"|\"mobile_money\"|\"cash\"|\"cheque\"|\"card\"|\"scholarship\""
+      }
+    ]
+  },
+  "meta": {
+    "path": "/api/v1/fees/payments",
+    "method": "POST",
+    "timestamp": "2026-08-03T20:18:09.825Z"
+  }
+}

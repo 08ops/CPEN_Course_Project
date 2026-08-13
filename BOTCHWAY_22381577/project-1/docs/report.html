@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CPEN 208 Project 1 Report — Gideon Elorm Glago (22128981)</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 16mm 16mm; }
+
+  :root {
+    --navy: #182a5e;
+    --navy-light: #2c4a93;
+    --gold: #b8860b;
+    --ink: #1a1a1a;
+    --muted: #5a6472;
+    --rule: #d5dae3;
+    --bg-soft: #f4f6fa;
+    --mono: "SF Mono", "Menlo", "Consolas", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  h1, h2, h3, h4 { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--navy); }
+  h1 { font-size: 20pt; margin: 0 0 4pt; letter-spacing: -0.3pt; }
+  h2 {
+    font-size: 13pt; margin: 22pt 0 8pt;
+    padding-bottom: 4pt; border-bottom: 1.5pt solid var(--navy);
+    page-break-after: avoid;
+  }
+  h3 { font-size: 11pt; margin: 14pt 0 5pt; page-break-after: avoid; }
+  h4 { font-size: 10pt; margin: 11pt 0 4pt; color: var(--navy-light); page-break-after: avoid; }
+  p { margin: 0 0 7pt; text-align: justify; }
+  ul, ol { margin: 0 0 8pt; padding-left: 18pt; }
+  li { margin-bottom: 3pt; }
+
+  code, .mono { font-family: var(--mono); font-size: 8.8pt; }
+  code { background: var(--bg-soft); padding: 0.5pt 3pt; border-radius: 2pt; }
+
+  pre {
+    font-family: var(--mono); font-size: 8pt; line-height: 1.42;
+    background: #10182c; color: #e6ecf7;
+    padding: 9pt 11pt; border-radius: 4pt;
+    overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;
+    margin: 7pt 0 10pt; page-break-inside: avoid;
+  }
+  pre.light {
+    background: var(--bg-soft); color: var(--ink);
+    border: 0.75pt solid var(--rule);
+  }
+  pre .c { color: #8fa3c7; }
+  pre .k { color: #ffb86c; }
+  pre .s { color: #a6e3a1; }
+
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 11pt; font-size: 9pt; page-break-inside: avoid; }
+  th, td { border: 0.5pt solid var(--rule); padding: 4pt 6pt; text-align: left; vertical-align: top; }
+  th { background: var(--navy); color: #fff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 8.5pt; }
+  tbody tr:nth-child(even) { background: #fafbfd; }
+  td.num, th.num { text-align: right; font-family: var(--mono); font-size: 8.5pt; }
+
+  .cover { text-align: center; padding-top: 34mm; page-break-after: always; }
+  .crest {
+    width: 66pt; height: 66pt; margin: 0 auto 14pt;
+    border-radius: 50%; background: var(--navy); color: #f5c04a;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 20pt;
+  }
+  .cover .uni { font-size: 14pt; font-weight: 700; color: var(--navy); font-family: "Helvetica Neue", Arial, sans-serif; }
+  .cover .sub { font-size: 10.5pt; color: var(--muted); margin-top: 3pt; }
+  .cover .rule { width: 100pt; height: 2pt; background: var(--gold); margin: 18pt auto; }
+  .cover h1 { font-size: 22pt; margin-bottom: 6pt; }
+  .cover .course { font-size: 12pt; color: var(--navy-light); margin-bottom: 26pt; font-family: "Helvetica Neue", Arial, sans-serif; }
+  .cover table { width: 78%; margin: 0 auto; font-size: 10.5pt; }
+  .cover td { border: none; padding: 4pt 8pt; }
+  .cover td:first-child { text-align: right; color: var(--muted); width: 42%; }
+  .cover td:last-child { text-align: left; font-weight: 600; }
+
+  .callout {
+    border-left: 3pt solid var(--gold); background: #fdf9ef;
+    padding: 8pt 11pt; margin: 9pt 0 11pt; page-break-inside: avoid;
+  }
+  .callout.navy { border-left-color: var(--navy-light); background: var(--bg-soft); }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout .lbl {
+    font-family: "Helvetica Neue", Arial, sans-serif; font-size: 8pt;
+    text-transform: uppercase; letter-spacing: 0.6pt; color: var(--gold);
+    font-weight: 700; display: block; margin-bottom: 3pt;
+  }
+  .callout.navy .lbl { color: var(--navy-light); }
+
+  .stats { display: flex; gap: 7pt; margin: 9pt 0 12pt; }
+  .stat { flex: 1; border: 0.75pt solid var(--rule); border-top: 2.5pt solid var(--navy); padding: 7pt; text-align: center; }
+  .stat .v { font-size: 15pt; font-weight: 700; color: var(--navy); font-family: "Helvetica Neue", Arial, sans-serif; display: block; }
+  .stat .l { font-size: 7.5pt; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4pt; font-family: "Helvetica Neue", Arial, sans-serif; }
+
+  .toc { margin: 6pt 0 0; }
+  .toc ol { list-style: none; padding-left: 0; counter-reset: s; }
+  .toc > ol > li { counter-increment: s; margin-bottom: 4pt; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 10pt; }
+  .toc > ol > li::before { content: counter(s) ". "; color: var(--gold); font-weight: 700; }
+  .toc ol ol { padding-left: 16pt; margin-top: 3pt; counter-reset: t; }
+  .toc ol ol li { counter-increment: t; font-size: 9pt; color: var(--muted); margin-bottom: 2pt; }
+  .toc ol ol li::before { content: counter(s) "." counter(t) " "; color: var(--navy-light); }
+
+  .page-break { page-break-before: always; }
+  .avoid-break { page-break-inside: avoid; }
+  figure { margin: 10pt 0 12pt; page-break-inside: avoid; }
+  figcaption { font-size: 8.5pt; color: var(--muted); text-align: center; margin-top: 5pt; font-family: "Helvetica Neue", Arial, sans-serif; }
+  svg { display: block; margin: 0 auto; max-width: 100%; }
+
+  .tag {
+    display: inline-block; font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7.5pt; font-weight: 700; padding: 1pt 5pt; border-radius: 8pt;
+    background: var(--navy); color: #fff; vertical-align: middle;
+  }
+  .tag.gold { background: var(--gold); }
+  .tag.green { background: #2e7d52; }
+
+  footer.sig { margin-top: 26pt; padding-top: 8pt; border-top: 0.5pt solid var(--rule); font-size: 8.5pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ COVER ══════════════════════════ -->
+<section class="cover">
+  <div class="crest">UG</div>
+  <div class="uni">UNIVERSITY OF GHANA</div>
+  <div class="sub">College of Basic and Applied Sciences</div>
+  <div class="sub">School of Engineering Sciences</div>
+  <div class="sub">Department of Computer Engineering</div>
+
+  <div class="rule"></div>
+
+  <div class="course">CPEN 208 — Introduction to Software Engineering</div>
+  <h1>Project 1</h1>
+  <p style="text-align:center; font-size:12pt; color:var(--muted); margin-bottom:26pt;">
+    A Relational Database and Next.js 14 Application for the<br>
+    Computer Engineering Department System (CEDS)
+  </p>
+
+  <table>
+    <tr><td>Author</td><td>Gideon Elorm Glago</td></tr>
+    <tr><td>Index number</td><td>22128981</td></tr>
+    <tr><td>Programme</td><td>BSc Computer Engineering</td></tr>
+    <tr><td>Level</td><td>200</td></tr>
+    <tr><td>Semester</td><td>First Semester, 2025/2026</td></tr>
+    <tr><td>Database</td><td>PostgreSQL 16.13</td></tr>
+    <tr><td>Application</td><td>Next.js 14.2 · TypeScript</td></tr>
+  </table>
+</section>
+
+<!-- ══════════════════════════ TOC ══════════════════════════ -->
+<h2 style="margin-top:0;">Table of Contents</h2>
+<nav class="toc">
+  <ol>
+    <li>Introduction and Scope
+      <ol><li>The problem</li><li>How the brief maps onto the deliverables</li></ol>
+    </li>
+    <li>Database Design
+      <ol>
+        <li>Why five schemas</li><li>Entity-relationship design</li>
+        <li>Table-by-table walkthrough</li><li>Keys, constraints and data integrity</li>
+        <li>Indexing strategy</li><li>Triggers and maintained values</li>
+      </ol>
+    </li>
+    <li>The Required Function — Outstanding Fees as a JSON Array
+      <ol><li>Specification</li><li>Implementation</li><li>Worked example</li><li>Proof of correctness</li></ol>
+    </li>
+    <li>Supporting Stored Functions</li>
+    <li>Sample Data — the CPEN 208 Class
+      <ol><li>What was loaded</li><li>Privacy assumption</li></ol>
+    </li>
+    <li>The Next.js 14 Application
+      <ol><li>Architecture</li><li>Register, login and sessions</li><li>The dashboard</li></ol>
+    </li>
+    <li>Assumptions Made</li>
+    <li>Testing and Verification</li>
+    <li>Backup and Restore</li>
+    <li>How to Run Everything</li>
+    <li>Challenges, Limitations and Future Work</li>
+    <li>Conclusion</li>
+  </ol>
+</nav>
+
+<!-- ══════════════════════════ 1 ══════════════════════════ -->
+<h2 class="page-break">1. Introduction and Scope</h2>
+
+<h3>1.1 The problem</h3>
+<p>
+  The Department of Computer Engineering intends to develop software that keeps
+  five kinds of record: student personal information, student fees payments,
+  course enrollment, the assignment of lecturers to courses, and the assignment
+  of teaching assistants to lecturers. Project 1 asks for the relational database
+  underneath that software, and for a Next.js 14 application with login,
+  registration and a dashboard on top of it.
+</p>
+<p>
+  At present these five things live in different places — a spreadsheet of the
+  class list, the Finance Office's own ledger, a paper registration form, and
+  the Head of Department's teaching-allocation memo. Nothing reconciles them.
+  The question <em>"how much does this student still owe?"</em> cannot be
+  answered without opening two systems and trusting that both are current. The
+  database built here exists to make that question answerable with one call.
+</p>
+
+<h3>1.2 How the brief maps onto the deliverables</h3>
+<table>
+  <thead><tr><th style="width:44%">Requirement in the brief</th><th>Where it is satisfied</th></tr></thead>
+  <tbody>
+    <tr><td>Create a Database</td><td><code>00_create_database.sql</code> — creates <code>cpen208_ceds</code></td></tr>
+    <tr><td>Create Schema(s) when needed</td><td><code>01_schemas.sql</code> — 5 schemas, 15 enum types, 3 domains</td></tr>
+    <tr><td>Create all Tables needed for the functionality</td><td><code>02_tables.sql</code> — 23 tables</td></tr>
+    <tr><td>Create Insert scripts that populate all the tables</td><td><code>06_seed_data.sql</code> — every table populated</td></tr>
+    <tr><td><strong>Database function: outstanding fees per student, output as a json array</strong></td><td><code>04_functions.sql</code> → <code>finance.fn_outstanding_fees_json()</code></td></tr>
+    <tr><td>Use your class as the data sample</td><td>The CPEN 208 Level-200 class, 32 students (§5)</td></tr>
+    <tr><td>Make all necessary assumptions</td><td>§7, and inline comments throughout the scripts</td></tr>
+    <tr><td>Use PostgreSQL</td><td>PostgreSQL 16.13</td></tr>
+    <tr><td>Next.js 14 application with login, register, dashboard</td><td><code>web/</code> — §6</td></tr>
+    <tr><td>Backup of the database</td><td><code>database/backup/</code> — 4 formats, restore-tested</td></tr>
+  </tbody>
+</table>
+
+<div class="stats">
+  <div class="stat"><span class="v">5</span><span class="l">Schemas</span></div>
+  <div class="stat"><span class="v">23</span><span class="l">Tables</span></div>
+  <div class="stat"><span class="v">23</span><span class="l">Functions</span></div>
+  <div class="stat"><span class="v">6</span><span class="l">Views</span></div>
+  <div class="stat"><span class="v">97</span><span class="l">Indexes</span></div>
+  <div class="stat"><span class="v">73</span><span class="l">Constraints</span></div>
+</div>
+
+<!-- ══════════════════════════ 2 ══════════════════════════ -->
+<h2>2. Database Design</h2>
+
+<h3>2.1 Why five schemas</h3>
+<p>
+  The brief says to create schemas <em>when needed</em>. Twenty-three tables in a
+  single <code>public</code> schema would work, but it would force prefix naming
+  (<code>fees_payment</code>, <code>academic_course</code>) to keep related
+  tables together visually, and it would make it impossible to grant an
+  application account access to fees without also granting it access to
+  everything else. The tables are therefore grouped by bounded context:
+</p>
+<table>
+  <thead><tr><th style="width:16%">Schema</th><th style="width:46%">Contents</th><th>Rationale</th></tr></thead>
+  <tbody>
+    <tr><td><code>core</code></td><td>department, programme, academic_year, semester</td><td>Reference data every other schema points at</td></tr>
+    <tr><td><code>people</code></td><td>person, student, next_of_kin, lecturer, teaching_assistant</td><td><strong>Functionality 1</strong>; a single source of truth for identity</td></tr>
+    <tr><td><code>academics</code></td><td>course, course_prerequisite, course_offering, enrollment, lecturer_course_assignment, lecturer_ta_assignment</td><td><strong>Functionalities 3, 4, 5</strong></td></tr>
+    <tr><td><code>finance</code></td><td>fee_structure, fee_item, student_bill, bill_line, payment</td><td><strong>Functionality 2</strong>; the schema with the tightest access requirements</td></tr>
+    <tr><td><code>app</code></td><td>app_user, user_session, audit_log</td><td>Authentication for the web app and the API — deliberately separate from <code>people</code></td></tr>
+  </tbody>
+</table>
+<p>
+  Keeping <code>app</code> separate from <code>people</code> matters: a login is
+  not a person. An administrator account has no personal record, and a person may
+  exist in the department's records for years before ever creating a login.
+  Conflating them would force nullable password columns onto the student table.
+</p>
+
+<h3>2.2 Entity-relationship design</h3>
+<figure>
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="crow" markerWidth="11" markerHeight="11" refX="10" refY="5.5" orient="auto">
+      <path d="M0,5.5 L10,1 M0,5.5 L10,10 M0,5.5 L10,5.5" stroke="#5a6472" stroke-width="1" fill="none"/>
+    </marker>
+  </defs>
+  <style>
+    .ent { fill:#fff; stroke:#182a5e; stroke-width:1.2; }
+    .ent-t { fill:#182a5e; }
+    .lbl { font-size:9px; font-weight:700; fill:#fff; }
+    .fld { font-size:7.5px; fill:#3c4756; }
+    .rel { stroke:#5a6472; stroke-width:1; fill:none; marker-end:url(#crow); }
+    .grp { fill:none; stroke-dasharray:3 3; stroke-width:1; }
+    .grp-t { font-size:8px; font-weight:700; letter-spacing:0.5px; }
+  </style>
+
+  <!-- group boxes -->
+  <rect class="grp" x="6" y="18" width="238" height="140" stroke="#b8860b" rx="4"/>
+  <text class="grp-t" x="12" y="14" fill="#b8860b">core — REFERENCE DATA</text>
+
+  <rect class="grp" x="6" y="176" width="238" height="200" stroke="#2e7d52" rx="4"/>
+  <text class="grp-t" x="12" y="172" fill="#2e7d52">people — FUNCTIONALITY 1</text>
+
+  <rect class="grp" x="262" y="18" width="242" height="358" stroke="#2c4a93" rx="4"/>
+  <text class="grp-t" x="268" y="14" fill="#2c4a93">academics — FUNCTIONALITIES 3, 4, 5</text>
+
+  <rect class="grp" x="522" y="18" width="232" height="270" stroke="#b03a3a" rx="4"/>
+  <text class="grp-t" x="528" y="14" fill="#b03a3a">finance — FUNCTIONALITY 2</text>
+
+  <rect class="grp" x="522" y="306" width="232" height="70" stroke="#6a4c93" rx="4"/>
+  <text class="grp-t" x="528" y="302" fill="#6a4c93">app — AUTH</text>
+
+  <!-- core -->
+  <rect class="ent" x="16" y="26" width="104" height="40" rx="3"/>
+  <rect class="ent-t" x="16" y="26" width="104" height="14" rx="3"/>
+  <text class="lbl" x="21" y="36">department</text>
+  <text class="fld" x="21" y="50">PK department_id</text>
+  <text class="fld" x="21" y="60">code, name</text>
+
+  <rect class="ent" x="140" y="26" width="96" height="40" rx="3"/>
+  <rect class="ent-t" x="140" y="26" width="96" height="14" rx="3"/>
+  <text class="lbl" x="145" y="36">programme</text>
+  <text class="fld" x="145" y="50">PK programme_id</text>
+  <text class="fld" x="145" y="60">FK department_id</text>
+
+  <rect class="ent" x="16" y="94" width="104" height="40" rx="3"/>
+  <rect class="ent-t" x="16" y="94" width="104" height="14" rx="3"/>
+  <text class="lbl" x="21" y="104">academic_year</text>
+  <text class="fld" x="21" y="118">PK academic_year_id</text>
+  <text class="fld" x="21" y="128">name, is_current</text>
+
+  <rect class="ent" x="140" y="94" width="96" height="40" rx="3"/>
+  <rect class="ent-t" x="140" y="94" width="96" height="14" rx="3"/>
+  <text class="lbl" x="145" y="104">semester</text>
+  <text class="fld" x="145" y="118">PK semester_id</text>
+  <text class="fld" x="145" y="128">FK academic_year_id</text>
+
+  <!-- people -->
+  <rect class="ent" x="16" y="186" width="106" height="46" rx="3"/>
+  <rect class="ent-t" x="16" y="186" width="106" height="14" rx="3"/>
+  <text class="lbl" x="21" y="196">person</text>
+  <text class="fld" x="21" y="210">PK person_id</text>
+  <text class="fld" x="21" y="220">names, dob, email</text>
+  <text class="fld" x="21" y="229">phone, national_id</text>
+
+  <rect class="ent" x="140" y="186" width="96" height="46" rx="3"/>
+  <rect class="ent-t" x="140" y="186" width="96" height="14" rx="3"/>
+  <text class="lbl" x="145" y="196">student</text>
+  <text class="fld" x="145" y="210">PK student_id</text>
+  <text class="fld" x="145" y="220">FK person_id (1:1)</text>
+  <text class="fld" x="145" y="229">FK programme_id</text>
+
+  <rect class="ent" x="16" y="250" width="106" height="38" rx="3"/>
+  <rect class="ent-t" x="16" y="250" width="106" height="14" rx="3"/>
+  <text class="lbl" x="21" y="260">lecturer</text>
+  <text class="fld" x="21" y="274">PK lecturer_id</text>
+  <text class="fld" x="21" y="283">FK person_id (1:1)</text>
+
+  <rect class="ent" x="140" y="250" width="96" height="38" rx="3"/>
+  <rect class="ent-t" x="140" y="250" width="96" height="14" rx="3"/>
+  <text class="lbl" x="145" y="260">next_of_kin</text>
+  <text class="fld" x="145" y="274">PK next_of_kin_id</text>
+  <text class="fld" x="145" y="283">FK student_id</text>
+
+  <rect class="ent" x="16" y="306" width="106" height="46" rx="3"/>
+  <rect class="ent-t" x="16" y="306" width="106" height="14" rx="3"/>
+  <text class="lbl" x="21" y="316">teaching_assistant</text>
+  <text class="fld" x="21" y="330">PK ta_id</text>
+  <text class="fld" x="21" y="340">FK person_id (1:1)</text>
+  <text class="fld" x="21" y="349">FK student_id (null)</text>
+
+  <!-- academics -->
+  <rect class="ent" x="272" y="26" width="104" height="40" rx="3"/>
+  <rect class="ent-t" x="272" y="26" width="104" height="14" rx="3"/>
+  <text class="lbl" x="277" y="36">course</text>
+  <text class="fld" x="277" y="50">PK course_id</text>
+  <text class="fld" x="277" y="60">course_code, level</text>
+
+  <rect class="ent" x="392" y="26" width="102" height="40" rx="3"/>
+  <rect class="ent-t" x="392" y="26" width="102" height="14" rx="3"/>
+  <text class="lbl" x="397" y="36">course_prerequisite</text>
+  <text class="fld" x="397" y="50">PK course_id</text>
+  <text class="fld" x="397" y="60">PK prerequisite_id</text>
+
+  <rect class="ent" x="272" y="96" width="222" height="44" rx="3"/>
+  <rect class="ent-t" x="272" y="96" width="222" height="14" rx="3"/>
+  <text class="lbl" x="277" y="106">course_offering — one running of a course</text>
+  <text class="fld" x="277" y="120">PK offering_id · FK course_id · FK semester_id</text>
+  <text class="fld" x="277" y="132">section, capacity, venue, meeting_days</text>
+
+  <rect class="ent" x="272" y="168" width="222" height="44" rx="3"/>
+  <rect class="ent-t" x="272" y="168" width="222" height="14" rx="3"/>
+  <text class="lbl" x="277" y="178">enrollment — FUNCTIONALITY 3</text>
+  <text class="fld" x="277" y="192">PK enrollment_id · FK student_id · FK offering_id</text>
+  <text class="fld" x="277" y="204">UNIQUE(student_id, offering_id) · status, grade</text>
+
+  <rect class="ent" x="272" y="238" width="222" height="44" rx="3"/>
+  <rect class="ent-t" x="272" y="238" width="222" height="14" rx="3"/>
+  <text class="lbl" x="277" y="248">lecturer_course_assignment — FUNC. 4</text>
+  <text class="fld" x="277" y="262">PK assignment_id · FK lecturer_id · FK offering_id</text>
+  <text class="fld" x="277" y="274">teaching_role, contact_hours_per_week</text>
+
+  <rect class="ent" x="272" y="308" width="222" height="52" rx="3"/>
+  <rect class="ent-t" x="272" y="308" width="222" height="14" rx="3"/>
+  <text class="lbl" x="277" y="318">lecturer_ta_assignment — FUNCTIONALITY 5</text>
+  <text class="fld" x="277" y="332">PK ta_assignment_id · FK lecturer_id · FK ta_id</text>
+  <text class="fld" x="277" y="344">FK offering_id (nullable) · FK semester_id</text>
+  <text class="fld" x="277" y="355">responsibility, weekly_hours</text>
+
+  <!-- finance -->
+  <rect class="ent" x="532" y="26" width="102" height="42" rx="3"/>
+  <rect class="ent-t" x="532" y="26" width="102" height="14" rx="3"/>
+  <text class="lbl" x="537" y="36">fee_structure</text>
+  <text class="fld" x="537" y="50">PK fee_structure_id</text>
+  <text class="fld" x="537" y="60">programme, level, year</text>
+
+  <rect class="ent" x="648" y="26" width="96" height="42" rx="3"/>
+  <rect class="ent-t" x="648" y="26" width="96" height="14" rx="3"/>
+  <text class="lbl" x="653" y="36">fee_item</text>
+  <text class="fld" x="653" y="50">PK fee_item_id</text>
+  <text class="fld" x="653" y="60">item_name, amount</text>
+
+  <rect class="ent" x="532" y="100" width="212" height="48" rx="3"/>
+  <rect class="ent-t" x="532" y="100" width="212" height="14" rx="3"/>
+  <text class="lbl" x="537" y="110">student_bill — FUNCTIONALITY 2</text>
+  <text class="fld" x="537" y="124">PK bill_id · FK student_id · FK academic_year_id</text>
+  <text class="fld" x="537" y="136">total_amount (maintained), due_date, status</text>
+
+  <rect class="ent" x="532" y="176" width="102" height="46" rx="3"/>
+  <rect class="ent-t" x="532" y="176" width="102" height="14" rx="3"/>
+  <text class="lbl" x="537" y="186">bill_line</text>
+  <text class="fld" x="537" y="200">PK bill_line_id</text>
+  <text class="fld" x="537" y="210">FK bill_id</text>
+  <text class="fld" x="537" y="219">description, amount</text>
+
+  <rect class="ent" x="648" y="176" width="96" height="46" rx="3"/>
+  <rect class="ent-t" x="648" y="176" width="96" height="14" rx="3"/>
+  <text class="lbl" x="653" y="186">payment</text>
+  <text class="fld" x="653" y="200">PK payment_id</text>
+  <text class="fld" x="653" y="210">FK bill_id, student_id</text>
+  <text class="fld" x="653" y="219">amount, status</text>
+
+  <rect class="ent" x="532" y="240" width="212" height="34" rx="3"/>
+  <rect class="ent-t" x="532" y="240" width="212" height="14" rx="3"/>
+  <text class="lbl" x="537" y="250">OUTSTANDING = billed − confirmed paid</text>
+  <text class="fld" x="537" y="266">computed by finance.fn_outstanding_fees_json()</text>
+
+  <!-- app -->
+  <rect class="ent" x="532" y="314" width="102" height="42" rx="3"/>
+  <rect class="ent-t" x="532" y="314" width="102" height="14" rx="3"/>
+  <text class="lbl" x="537" y="324">app_user</text>
+  <text class="fld" x="537" y="338">PK user_id</text>
+  <text class="fld" x="537" y="348">FK person_id (null)</text>
+
+  <rect class="ent" x="648" y="314" width="96" height="42" rx="3"/>
+  <rect class="ent-t" x="648" y="314" width="96" height="14" rx="3"/>
+  <text class="lbl" x="653" y="324">user_session</text>
+  <text class="fld" x="653" y="338">PK session_id</text>
+  <text class="fld" x="653" y="348">token_hash, expires</text>
+
+  <!-- relationships -->
+  <path class="rel" d="M120,46 L136,46"/>
+  <path class="rel" d="M120,114 L136,114"/>
+  <path class="rel" d="M122,206 L136,206"/>
+  <path class="rel" d="M122,266 L136,266" marker-end=""/>
+  <path class="rel" d="M69,232 L69,246"/>
+  <path class="rel" d="M69,288 L69,302"/>
+  <path class="rel" d="M188,232 L188,246"/>
+  <path class="rel" d="M188,66 L188,90"/>
+  <path class="rel" d="M236,206 L268,190"/>
+  <path class="rel" d="M236,269 L268,258"/>
+  <path class="rel" d="M122,330 L268,332"/>
+  <path class="rel" d="M324,66 L324,92"/>
+  <path class="rel" d="M392,46 L380,46"/>
+  <path class="rel" d="M236,114 L268,114"/>
+  <path class="rel" d="M383,140 L383,164"/>
+  <path class="rel" d="M383,212 L383,234"/>
+  <path class="rel" d="M420,282 L420,304"/>
+  <path class="rel" d="M236,196 L268,120"/>
+  <path class="rel" d="M634,47 L644,47"/>
+  <path class="rel" d="M583,68 L583,96"/>
+  <path class="rel" d="M583,148 L583,172"/>
+  <path class="rel" d="M696,148 L696,172"/>
+  <path class="rel" d="M236,214 L528,120"/>
+  <path class="rel" d="M122,214 L528,330"/>
+  <path class="rel" d="M634,335 L644,335"/>
+</svg>
+<figcaption>
+  Figure 1 — Entity-relationship design. Crow's-feet point to the "many" side.
+  Grouping boxes show the schema each entity belongs to and the functionality it serves.
+</figcaption>
+</figure>
+
+<h4>The three design decisions worth defending</h4>
+<p>
+  <strong>(a) A <code>person</code> supertype.</strong> Students, lecturers and
+  teaching assistants all have a name, a date of birth, an e-mail address and a
+  phone number. Repeating those columns in three tables would mean that a
+  teaching assistant who is also a postgraduate student — which is the normal
+  case — appears twice, with two e-mail addresses that can silently diverge.
+  <code>people.person</code> holds the shared attributes once;
+  <code>student</code>, <code>lecturer</code> and <code>teaching_assistant</code>
+  are role tables each holding a <code>UNIQUE</code> foreign key to a person plus
+  the columns unique to that role. In the sample data, TA/2025/001 and TA/2025/002
+  are the same people as MPhil students 24500112 and 24500198 — one person row each.
+</p>
+<p>
+  <strong>(b) <code>course</code> is separate from <code>course_offering</code>.</strong>
+  CPEN 208 as a catalogue entry — its code, title and credit hours — is stable
+  for years. CPEN 208 <em>as taught in First Semester 2025/2026</em> has a
+  lecturer, a venue, a capacity and a class list, all of which change every
+  session. Enrolment and teaching assignment therefore reference the
+  <em>offering</em>, not the course. Without this split, registering for CPEN 208
+  in two different years would be indistinguishable, and a lecturer could not be
+  recorded as having taught it in one year but not the next.
+</p>
+<p>
+  <strong>(c) <code>bill_line</code> copies the fee items rather than referencing them.</strong>
+  When a bill is generated, the amounts from the price list are copied onto the
+  bill. If the department raises the Academic Facility User Fee next year, last
+  year's bills must not silently change. The frozen copy is what makes the
+  outstanding-fees figure historically truthful.
+</p>
+
+<h3 class="page-break">2.3 Table-by-table walkthrough</h3>
+<table>
+  <thead><tr><th style="width:30%">Table</th><th style="width:9%" class="num">Rows</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>core.department</code></td><td class="num">3</td><td>Computer Engineering, Mathematics, and the UGRC office</td></tr>
+    <tr><td><code>core.programme</code></td><td class="num">2</td><td>BSc and MPhil Computer Engineering</td></tr>
+    <tr><td><code>core.academic_year</code></td><td class="num">2</td><td>2024/2025 and 2025/2026; exactly one may be current</td></tr>
+    <tr><td><code>core.semester</code></td><td class="num">4</td><td>Two per year; exactly one may be current</td></tr>
+    <tr><td><code>people.person</code></td><td class="num">44</td><td>Every human: 36 students, 7 lecturers, 1 external TA</td></tr>
+    <tr><td><code>people.student</code></td><td class="num">36</td><td>32 Level-200, 2 Level-400, 2 MPhil</td></tr>
+    <tr><td><code>people.next_of_kin</code></td><td class="num">10</td><td>Emergency contacts; at most one primary per student</td></tr>
+    <tr><td><code>people.lecturer</code></td><td class="num">7</td><td>Teaching staff across the three departments</td></tr>
+    <tr><td><code>people.teaching_assistant</code></td><td class="num">5</td><td>2 graduate, 2 undergraduate, 1 external</td></tr>
+    <tr><td><code>academics.course</code></td><td class="num">10</td><td>The catalogue, including two Level-100 prerequisites</td></tr>
+    <tr><td><code>academics.course_prerequisite</code></td><td class="num">5</td><td>Self-referencing many-to-many</td></tr>
+    <tr><td><code>academics.course_offering</code></td><td class="num">8</td><td>Courses running in First Semester 2025/2026</td></tr>
+    <tr><td><code>academics.enrollment</code></td><td class="num">226</td><td><strong>Functionality 3</strong> — 32 students × 7 courses, plus exceptions</td></tr>
+    <tr><td><code>academics.lecturer_course_assignment</code></td><td class="num">9</td><td><strong>Functionality 4</strong> — 8 leads + 1 co-lecturer</td></tr>
+    <tr><td><code>academics.lecturer_ta_assignment</code></td><td class="num">6</td><td><strong>Functionality 5</strong></td></tr>
+    <tr><td><code>finance.fee_structure</code></td><td class="num">5</td><td>Price lists per programme/level/residency</td></tr>
+    <tr><td><code>finance.fee_item</code></td><td class="num">26</td><td>Tuition, facility fee, examination, SRC dues, …</td></tr>
+    <tr><td><code>finance.student_bill</code></td><td class="num">36</td><td><strong>Functionality 2</strong> — one per student per year</td></tr>
+    <tr><td><code>finance.bill_line</code></td><td class="num">190</td><td>Frozen copy of the charges on each bill</td></tr>
+    <tr><td><code>finance.payment</code></td><td class="num">54</td><td>Confirmed, pending and reversed payments</td></tr>
+    <tr><td><code>app.app_user</code></td><td class="num">18</td><td>Logins; passwords bcrypt-hashed</td></tr>
+    <tr><td><code>app.user_session</code></td><td class="num">—</td><td>Populated at runtime by the web application</td></tr>
+    <tr><td><code>app.audit_log</code></td><td class="num">18</td><td>Append-only trail of security-relevant actions</td></tr>
+  </tbody>
+</table>
+
+<h3>2.4 Keys, constraints and data integrity</h3>
+<p>
+  Every table uses a surrogate primary key generated with
+  <code>GENERATED ALWAYS AS IDENTITY</code>, and carries a natural unique key
+  alongside it (<code>student_number</code>, <code>staff_number</code>,
+  <code>course_code</code>, <code>receipt_number</code>). Surrogate keys keep
+  foreign keys narrow and stable; the natural key is what humans quote and what
+  the seed scripts join on, so the scripts contain no hard-coded ids.
+</p>
+<p>
+  The database enforces <strong>36 foreign keys</strong> and
+  <strong>37 CHECK constraints</strong>. The rules that are genuinely
+  interesting are the ones that stop the data from telling a story that cannot
+  be true:
+</p>
+<table>
+  <thead><tr><th style="width:34%">Constraint</th><th>What it prevents</th></tr></thead>
+  <tbody>
+    <tr><td><code>student_hall_ck</code></td><td>A resident student without a hall, or a commuter assigned to one</td></tr>
+    <tr><td><code>ta_student_link_ck</code></td><td>A graduate/undergraduate TA with no student record, or an external TA with one</td></tr>
+    <tr><td><code>enrollment_dropped_ck</code></td><td>A registration marked <em>dropped</em> with no date, or a date without the status</td></tr>
+    <tr><td><code>enrollment_uq</code></td><td>Registering for the same offering twice</td></tr>
+    <tr><td><code>student_bill_uq</code></td><td>Two bills for the same student in one academic year</td></tr>
+    <tr><td><code>student_bill_due_ck</code></td><td>A due date that falls before the issue date</td></tr>
+    <tr><td><code>payment_amount_ck</code></td><td>A zero or negative payment</td></tr>
+    <tr><td><code>lecturer_course_one_lead_uq</code></td><td>Two lead lecturers on one offering <span class="tag">partial index</span></td></tr>
+    <tr><td><code>academic_year_one_current_uq</code></td><td>Two academic years flagged current <span class="tag">partial index</span></td></tr>
+    <tr><td><code>next_of_kin_one_primary_uq</code></td><td>Two primary emergency contacts for one student <span class="tag">partial index</span></td></tr>
+  </tbody>
+</table>
+<div class="callout navy">
+  <span class="lbl">A note on partial unique indexes</span>
+  <p>
+    "At most one lead lecturer per offering" cannot be written as a
+    <code>UNIQUE</code> constraint, because <em>several</em> co-lecturers are
+    allowed on the same offering. PostgreSQL's partial index expresses it
+    exactly: <code>CREATE UNIQUE INDEX … ON lecturer_course_assignment (offering_id)
+    WHERE teaching_role = 'lead_lecturer' AND is_active</code>. The same technique
+    enforces the single current academic year and the single primary next-of-kin.
+  </p>
+</div>
+<p>
+  The same trick solves a subtler problem in <code>lecturer_ta_assignment</code>.
+  Its <code>offering_id</code> is nullable, because a TA may support a lecturer
+  generally rather than on one named course. A plain
+  <code>UNIQUE(lecturer_id, ta_id, offering_id)</code> would not stop duplicates,
+  since SQL treats each <code>NULL</code> as distinct. Two partial indexes — one
+  for rows with an offering, one for rows without — close that gap.
+</p>
+
+<h3>2.5 Indexing strategy</h3>
+<p>
+  PostgreSQL already creates an index for every primary key and unique
+  constraint, so only foreign-key columns and frequent filter or sort columns are
+  indexed explicitly. Indexing everything would slow down writes for no benefit.
+  Of the <strong>97</strong> indexes present, the ones that matter most carry the
+  outstanding-fees calculation:
+</p>
+<pre class="light"><span class="c">-- The fees function only ever sums CONFIRMED money, so the index
+-- stores only those rows: smaller, and it answers the query directly.</span>
+CREATE INDEX payment_confirmed_ix ON finance.payment (bill_id, amount)
+                                  WHERE status = 'confirmed';
+
+<span class="c">-- Live sessions only - expired rows are never looked up.</span>
+CREATE INDEX session_live_ix ON app.user_session (expires_at)
+                             WHERE revoked_at IS NULL;</pre>
+
+<h3>2.6 Triggers and maintained values</h3>
+<p>
+  Four trigger functions keep derived data honest and enforce rules that a
+  <code>CHECK</code> constraint cannot express, because they must look at other rows:
+</p>
+<table>
+  <thead><tr><th style="width:34%">Trigger function</th><th>Behaviour</th></tr></thead>
+  <tbody>
+    <tr><td><code>core.fn_set_updated_at</code></td><td>Stamps <code>updated_at</code> on every update, across all 18 tables that carry the column</td></tr>
+    <tr><td><code>finance.fn_refresh_bill_total</code></td><td>Keeps <code>student_bill.total_amount</code> equal to the sum of its bill lines</td></tr>
+    <tr><td><code>finance.fn_refresh_bill_status</code></td><td>Recalculates <em>issued / part_paid / paid / overdue</em> whenever a payment changes</td></tr>
+    <tr><td><code>academics.fn_validate_enrollment</code></td><td>Rejects registration when the student is not active, the class is full, or registration is closed</td></tr>
+  </tbody>
+</table>
+<p>
+  <code>student_bill.total_amount</code> is a deliberate, maintained
+  denormalisation. The outstanding-fees report reads it for every student on
+  every call; recomputing <code>SUM(bill_line.amount)</code> each time would be
+  wasteful. The trigger guarantees it can never drift from the sum of its lines,
+  which is the only condition under which such a denormalisation is safe.
+</p>
+
+<!-- ══════════════════════════ 3 ══════════════════════════ -->
+<h2 class="page-break">3. The Required Function — Outstanding Fees as a JSON Array</h2>
+
+<div class="callout">
+  <span class="lbl">The requirement, verbatim</span>
+  <p>
+    "Create a database function that will calculate the outstanding fees for each
+    student in your database and return the output in json array."
+  </p>
+</div>
+
+<h3>3.1 Specification</h3>
+<pre>finance.fn_outstanding_fees_json(
+    p_academic_year_id INTEGER DEFAULT NULL,   <span class="c">-- NULL = every academic year</span>
+    p_programme_id     INTEGER DEFAULT NULL,   <span class="c">-- NULL = every programme</span>
+    p_only_indebted    BOOLEAN DEFAULT FALSE   <span class="c">-- TRUE = hide fully paid students</span>
+) RETURNS json</pre>
+<p>
+  All three parameters are optional, so the no-argument call
+  <code>SELECT finance.fn_outstanding_fees_json();</code> satisfies the brief
+  exactly while the same function still serves the filtered views the dashboard
+  and the REST API need. The definition of the figure it returns is:
+</p>
+<div class="callout navy">
+  <p style="text-align:center; font-size:11pt; margin:2pt 0;">
+    <strong>outstanding = Σ (amount billed) − Σ (payments with status <code>confirmed</code>)</strong>
+  </p>
+</div>
+<p>
+  Payments that are <code>pending</code>, <code>reversed</code> or
+  <code>failed</code> are deliberately excluded. A cheque lodged but not yet
+  cleared has not reduced what the student owes, and a reversed mobile-money
+  transfer never did. This is the single most important business rule in the
+  fees module, so the sample data contains one pending payment and one reversed
+  payment purely so the exclusion can be demonstrated (§8).
+</p>
+
+<h3>3.2 Implementation</h3>
+<p>
+  The function is written in three steps as a chain of CTEs. Abridged, with the
+  reasoning in comments:
+</p>
+<pre>WITH bill_payment AS (
+    <span class="c">-- Step 1: collapse each bill to (billed, confirmed paid, last payment).
+    -- The FILTER clause is what implements the confirmed-only rule.</span>
+    SELECT b.bill_id, b.student_id, b.total_amount, b.due_date, b.status,
+           COALESCE(SUM(p.amount) FILTER (WHERE p.status = 'confirmed'), 0) AS paid,
+           MAX(p.payment_date) FILTER (WHERE p.status = 'confirmed') AS last_payment_date
+    FROM   finance.student_bill b
+    LEFT   JOIN finance.payment p ON p.bill_id = b.bill_id
+    WHERE  b.status &lt;&gt; 'cancelled'
+      AND  (p_academic_year_id IS NULL OR b.academic_year_id = p_academic_year_id)
+    GROUP  BY b.bill_id
+),
+student_totals AS (
+    <span class="c">-- Step 2: roll the bills up to the student and nest the per-bill
+    -- breakdown. The LEFT JOIN keeps students who have never been billed,
+    -- so "each student in your database" really does mean each student.</span>
+    SELECT s.student_id, s.student_number, pr.first_name, pr.last_name, ...
+           COALESCE(SUM(bp.total_amount), 0)                     AS total_billed,
+           COALESCE(SUM(bp.paid), 0)                             AS total_paid,
+           COALESCE(SUM(bp.total_amount), 0)
+             - COALESCE(SUM(bp.paid), 0)                         AS outstanding_balance,
+           COALESCE(json_agg(json_build_object(...))
+                    FILTER (WHERE bp.bill_id IS NOT NULL), '[]'::json) AS bills
+    FROM   people.student s
+    JOIN   people.person    pr ON pr.person_id    = s.person_id
+    JOIN   core.programme   pg ON pg.programme_id = s.programme_id
+    LEFT   JOIN bill_payment bp ON bp.student_id  = s.student_id
+    WHERE  (p_programme_id IS NULL OR s.programme_id = p_programme_id)
+    GROUP  BY s.student_id, pr.person_id, pg.programme_id
+)
+<span class="c">-- Step 3: shape the array. COALESCE guarantees a valid empty array
+-- rather than SQL NULL when no student matches the filters.</span>
+SELECT COALESCE(json_agg(json_build_object(
+           'student_id', t.student_id, 'student_number', t.student_number,
+           'full_name', ..., 'total_billed', ROUND(t.total_billed, 2),
+           'total_paid', ROUND(t.total_paid, 2),
+           'outstanding_balance', ROUND(t.outstanding_balance, 2),
+           'payment_status', CASE WHEN t.total_billed = 0         THEN 'NOT BILLED'
+                                  WHEN t.outstanding_balance &lt;= 0 THEN 'FULLY PAID'
+                                  WHEN t.total_paid = 0           THEN 'NO PAYMENT'
+                                  ELSE 'PART PAID' END,
+           'bills', t.bills)
+         ORDER BY t.outstanding_balance DESC, t.student_number), '[]'::json)
+INTO   v_result
+FROM   student_totals t
+WHERE  (NOT p_only_indebted OR t.outstanding_balance &gt; 0);</pre>
+
+<h4>Four details that are easy to get wrong</h4>
+<ul>
+  <li>
+    <strong><code>LEFT JOIN</code> from <code>student</code>, not <code>student_bill</code>.</strong>
+    An inner join would silently drop any student who has never been billed. The
+    brief says <em>each student</em>, so an unbilled student must still appear —
+    with a balance of zero and the status <code>NOT BILLED</code>.
+  </li>
+  <li>
+    <strong><code>FILTER</code> rather than a <code>WHERE</code> clause.</strong>
+    Filtering the join to confirmed payments in <code>WHERE</code> would also
+    remove bills that have <em>only</em> unconfirmed payments, hiding exactly the
+    debt the report exists to surface.
+  </li>
+  <li>
+    <strong><code>COALESCE(json_agg(...), '[]')</code>.</strong> With no matching
+    rows, <code>json_agg</code> returns SQL <code>NULL</code>, not an empty array.
+    A client doing <code>data.length</code> would then fail. The
+    <code>COALESCE</code> guarantees the return value is always a JSON array —
+    which is what the brief asks for.
+  </li>
+  <li>
+    <strong><code>json_agg(... ) FILTER (WHERE bp.bill_id IS NOT NULL)</code>.</strong>
+    Without the filter, an unbilled student's nested <code>bills</code> array
+    would contain one object full of nulls instead of being empty.
+  </li>
+</ul>
+
+<h3>3.3 Worked example</h3>
+<p>The author's own record, as returned by the function:</p>
+<pre>SELECT jsonb_pretty(e::jsonb)
+FROM   json_array_elements(finance.fn_outstanding_fees_json()) e
+WHERE  e-&gt;&gt;'student_number' = '22128981';</pre>
+<pre>{
+    "student_id": 36,
+    "student_number": "22128981",
+    "full_name": "Gideon Elorm Glago",
+    "email": "gideon.glago@st.ug.edu.gh",
+    "programme": "BSc Computer Engineering",
+    "programme_code": "BSC-CPEN",
+    "level": 200,
+    "student_status": "active",
+    "residential_status": "non-resident",
+    "currency": "GHS",
+    "total_billed": 4470.00,
+    "total_paid": 3200.00,
+    "outstanding_balance": 1270.00,
+    "percentage_paid": 71.59,
+    "payment_status": "PART PAID",
+    "last_payment_date": "2025-11-18",
+    "bill_count": 1,
+    "bills": [
+        {
+            "bill_id": 36,
+            "bill_reference": "BILL-20252026-00036",
+            "academic_year": "2025/2026",
+            "amount_billed": 4470.00,
+            "amount_paid": 3200.00,
+            "balance": 1270.00,
+            "due_date": "2025-10-31",
+            "bill_status": "overdue",
+            "payments_recorded": 2,
+            "is_overdue": true
+        }
+    ]
+}</pre>
+<p>
+  The arithmetic is auditable by hand: the Level-200 non-resident fee structure
+  charges GH₵2,050.00 facility fee + GH₵1,890.00 tuition + GH₵320.00 examination
+  + GH₵150.00 SRC dues + GH₵60.00 insurance = <strong>GH₵4,470.00</strong>. Two
+  instalments of GH₵2,000.00 and GH₵1,200.00 were confirmed, leaving
+  <strong>GH₵1,270.00</strong> outstanding — 71.59% paid.
+</p>
+
+<h3>3.4 Proof of correctness</h3>
+<p>
+  Asserting that a function is correct is not the same as showing it. Section 7d
+  of <code>07_verification.sql</code> recomputes every balance a second time,
+  independently, in plain SQL that shares no code with the function, and compares
+  the two:
+</p>
+<pre class="light">WITH from_function AS (
+    SELECT (e-&gt;&gt;'student_id')::INT, (e-&gt;&gt;'outstanding_balance')::NUMERIC
+    FROM   json_array_elements(finance.fn_outstanding_fees_json()) AS e
+),
+from_plain_sql AS (
+    SELECT s.student_id,
+           COALESCE(SUM(b.total_amount), 0)
+         - COALESCE(SUM((SELECT SUM(p.amount) FROM finance.payment p
+                         WHERE p.bill_id = b.bill_id AND p.status = 'confirmed')), 0)
+    FROM   people.student s
+    LEFT   JOIN finance.student_bill b ON b.student_id = s.student_id
+                                      AND b.status &lt;&gt; 'cancelled'
+    GROUP  BY s.student_id
+)
+SELECT COUNT(*) AS students_compared,
+       COUNT(*) FILTER (WHERE fn_outstanding &lt;&gt; sql_outstanding) AS mismatches,
+       SUM(ABS(fn_outstanding - sql_outstanding)) AS total_difference
+FROM   from_function JOIN from_plain_sql USING (student_id);</pre>
+<pre> students_compared | mismatches | total_difference
+-------------------+------------+------------------
+                36 |          0 |             0.00</pre>
+<div class="callout">
+  <span class="lbl">Result</span>
+  <p>
+    36 students compared, <strong>0 mismatches</strong>, total difference
+    <strong>0.00</strong>. The full captured output is in
+    <code>docs/verification_output.txt</code>.
+  </p>
+</div>
+<p>
+  The type of the return value is also asserted rather than assumed:
+</p>
+<pre> json_type | elements_in_array
+-----------+-------------------
+ array     |                36</pre>
+
+<!-- ══════════════════════════ 4 ══════════════════════════ -->
+<h2>4. Supporting Stored Functions</h2>
+<p>
+  The outstanding-fees function is the required deliverable, but a database that
+  exposes only that one function would push the rest of the logic into
+  application code — where it would then have to be written twice, once for the
+  Next.js app and once for the Project 2 API. Nineteen callable functions and
+  four trigger functions were therefore written, so that both clients share one
+  tested surface.
+</p>
+<table>
+  <thead><tr><th style="width:44%">Function</th><th style="width:9%">Func.</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>finance.fn_outstanding_fees_json</code> <span class="tag gold">required</span></td><td>2</td><td>Outstanding fees for every student, as a JSON array</td></tr>
+    <tr><td><code>finance.fn_student_outstanding_balance</code></td><td>2</td><td>Scalar balance for one student</td></tr>
+    <tr><td><code>finance.fn_student_fee_statement_json</code></td><td>2</td><td>Bills, line items and payment history for one student</td></tr>
+    <tr><td><code>finance.fn_generate_student_bill</code></td><td>2</td><td>Creates a bill by copying the fee structure onto bill lines</td></tr>
+    <tr><td><code>finance.fn_record_payment</code></td><td>2</td><td>Records a payment, returns the receipt and the new balance</td></tr>
+    <tr><td><code>finance.fn_fees_summary_json</code></td><td>2</td><td>Department-wide collection statistics</td></tr>
+    <tr><td><code>people.fn_student_profile_json</code></td><td>1</td><td>Complete personal, contact and academic record</td></tr>
+    <tr><td><code>people.fn_students_json</code></td><td>1</td><td>Searchable student directory</td></tr>
+    <tr><td><code>academics.fn_enroll_student</code></td><td>3</td><td>Registers a student for a course offering</td></tr>
+    <tr><td><code>academics.fn_drop_enrollment</code></td><td>3</td><td>Withdraws a student, preserving the history</td></tr>
+    <tr><td><code>academics.fn_student_enrollments_json</code></td><td>3</td><td>A student's courses with lecturer and timetable</td></tr>
+    <tr><td><code>academics.fn_class_list_json</code></td><td>3</td><td>The class register for one offering</td></tr>
+    <tr><td><code>academics.fn_assign_lecturer_to_course</code></td><td>4</td><td>Assigns a lecturer to an offering in a role</td></tr>
+    <tr><td><code>academics.fn_lecturer_workload_json</code></td><td>4, 5</td><td>A lecturer's courses, hours and TAs</td></tr>
+    <tr><td><code>academics.fn_assign_ta_to_lecturer</code></td><td>5</td><td>Assigns a TA, guarding the weekly hour cap</td></tr>
+    <tr><td><code>academics.fn_ta_assignments_json</code></td><td>5</td><td>Every lecturer-to-TA assignment</td></tr>
+    <tr><td><code>app.fn_register_user</code></td><td>—</td><td>Creates a login and writes the audit row</td></tr>
+    <tr><td><code>app.fn_user_context_json</code></td><td>—</td><td>Resolves a user across all role tables</td></tr>
+    <tr><td><code>app.fn_dashboard_stats_json</code></td><td>—</td><td>Headline counters for the dashboard</td></tr>
+  </tbody>
+</table>
+<p>
+  Two of these encode rules that would be easy to lose if they lived in
+  application code. <code>fn_assign_ta_to_lecturer</code> refuses an assignment
+  that would push a teaching assistant past their contracted weekly hours, and
+  refuses to attach a TA to a course the named lecturer does not actually teach.
+  <code>fn_enroll_student</code> relies on the enrolment trigger to reject a full
+  class or an inactive student. Because these live in the database, they hold
+  whether the caller is <code>psql</code>, the web application, or the REST API.
+</p>
+
+<!-- ══════════════════════════ 5 ══════════════════════════ -->
+<h2 class="page-break">5. Sample Data — the CPEN 208 Class</h2>
+
+<h3>5.1 What was loaded</h3>
+<p>
+  The brief says to use the class as the data sample. <code>06_seed_data.sql</code>
+  models the CPEN 208 class of First Semester 2025/2026 and everything around it:
+</p>
+<ul>
+  <li><strong>32 Level-200 students</strong> reading BSc Computer Engineering, each registered for all seven Level-200 courses;</li>
+  <li><strong>2 Level-400 students</strong> and <strong>2 MPhil students</strong> who also serve as teaching assistants, which is what exercises the person-supertype design;</li>
+  <li><strong>7 lecturers</strong> across Computer Engineering, Mathematics and the UGRC office;</li>
+  <li><strong>5 teaching assistants</strong> — two graduate, two undergraduate, one external national-service appointee;</li>
+  <li><strong>10 courses</strong>, <strong>8 semester offerings</strong>, <strong>226 registrations</strong>;</li>
+  <li><strong>36 bills</strong> totalling <strong>GH₵191,240.00</strong>, against which <strong>GH₵115,093.50</strong> has been collected.</li>
+</ul>
+<p>
+  The data is deliberately imperfect, because uniformly perfect data tests
+  nothing. Two students dropped MATH 223 after the add/drop window; one is
+  repeating CPEN 201; one payment is a cheque still awaiting clearance; one
+  mobile-money transfer was reversed by the provider; one student's balance was
+  settled outright by a GETFund scholarship. The instalment plan each student
+  follows is derived deterministically from their id, so re-running the script
+  always produces byte-identical data.
+</p>
+<div class="stats">
+  <div class="stat"><span class="v">GH₵191,240</span><span class="l">Total billed</span></div>
+  <div class="stat"><span class="v">GH₵115,094</span><span class="l">Collected</span></div>
+  <div class="stat"><span class="v">GH₵76,147</span><span class="l">Outstanding</span></div>
+  <div class="stat"><span class="v">60.2%</span><span class="l">Collection rate</span></div>
+  <div class="stat"><span class="v">15 / 21</span><span class="l">Paid / owing</span></div>
+</div>
+
+<h3>5.2 Privacy assumption</h3>
+<div class="callout">
+  <span class="lbl">Stated explicitly</span>
+  <p>
+    Apart from the author's own record (22128981), <strong>all</strong> personal
+    details in the sample — names, dates of birth, Ghana Card numbers, phone
+    numbers, e-mail addresses and fee balances — are synthetic stand-ins for real
+    classmates and staff. They are realistic in <em>shape</em>, so that every
+    constraint, trigger and function is genuinely exercised, but they identify
+    nobody. Publishing real classmates' dates of birth, national identity numbers
+    and outstanding fee balances to a public repository would not be defensible,
+    and the brief's instruction to "make all necessary assumptions" is taken to
+    cover this. The lecturers' names are likewise invented and are not intended to
+    correspond to any member of staff.
+  </p>
+</div>
+
+<!-- ══════════════════════════ 6 ══════════════════════════ -->
+<h2>6. The Next.js 14 Application</h2>
+
+<h3>6.1 Architecture</h3>
+<p>
+  Question 2 asks for a Next.js 14 application with login, register and a
+  dashboard. It is built on the App Router with TypeScript in strict mode and
+  Tailwind CSS, and it talks to PostgreSQL directly through a pooled
+  <code>pg</code> client. No ORM is used — the queries already exist in the
+  database as functions, and an ORM would add a translation layer over SQL that
+  is deliberately hand-written.
+</p>
+<table>
+  <thead><tr><th style="width:26%">Concern</th><th style="width:26%">Choice</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td>Framework</td><td>Next.js 14.2, App Router</td><td>Required by the brief; server components keep the pool and bcrypt off the client</td></tr>
+    <tr><td>Data access</td><td><code>pg</code> pool, cached on <code>globalThis</code></td><td>Hot reload would otherwise leak a pool per edit</td></tr>
+    <tr><td>Mutations</td><td>Server Actions</td><td>Form posts without hand-written API routes</td></tr>
+    <tr><td>Passwords</td><td>bcrypt, cost 10</td><td>The plain password never reaches the database or a log</td></tr>
+    <tr><td>Sessions</td><td>Opaque token; SHA-256 hash stored</td><td>Revocable, unlike a stateless JWT; a leaked dump cannot be replayed</td></tr>
+    <tr><td>Validation</td><td>zod</td><td>One schema validates in the browser and again on the server</td></tr>
+  </tbody>
+</table>
+
+<h3>6.2 Register, login and sessions</h3>
+<p>
+  <strong>Registration</strong> validates the form with zod, hashes the password
+  with bcrypt, and calls <code>app.fn_register_user(...)</code>. If the user
+  supplies an index number, the new login is linked to the existing
+  <code>people.person</code> row, so their real fees and courses appear the moment
+  they sign in. This was verified live: registering the account
+  <code>efua.lamptey</code> against index number 22129055 produced a session whose
+  dashboard immediately showed that student's true outstanding balance of
+  GH₵1,788.00 and her seven registered courses.
+</p>
+<p>
+  <strong>Login</strong> accepts a username, an index number or an e-mail address.
+  An unknown user and a wrong password return the <em>identical</em> message, so
+  the form cannot be used to discover which accounts exist; the code even runs a
+  dummy bcrypt comparison in the unknown-user branch so the two paths take
+  comparable time. Five consecutive failures lock the account for fifteen minutes.
+</p>
+<p>
+  <strong>Sessions</strong> are the part most often done badly. The browser
+  receives a 32-byte random token in an <code>httpOnly</code> cookie; the database
+  stores only its SHA-256 hash in <code>app.user_session</code>. Anyone who
+  obtains a database dump therefore cannot replay a live session. Sessions expire
+  after seven days and can be revoked server-side, which a stateless JWT could not
+  offer.
+</p>
+<div class="callout navy">
+  <span class="lbl">Why middleware alone is not the security boundary</span>
+  <p>
+    <code>src/middleware.ts</code> runs on the Edge runtime, which cannot open a
+    TCP connection to PostgreSQL. It can therefore only check that a session
+    cookie is <em>present</em>. The authoritative check is
+    <code>getCurrentUser()</code> in the dashboard layout, which validates the
+    token against <code>app.user_session</code> on every request. A forged cookie
+    passes middleware and is then rejected by the layout, which redirects to
+    <code>/login</code>. Treating middleware as the security boundary — a common
+    mistake — would leave the dashboard open to anyone who set a cookie by hand.
+  </p>
+</div>
+
+<h3>6.3 The dashboard</h3>
+<p>
+  The dashboard is role-aware: a student, a lecturer and an administrator see
+  different navigation and different pages from the same route tree.
+</p>
+<table>
+  <thead><tr><th style="width:32%">Route</th><th style="width:16%">Access</th><th>Shows</th></tr></thead>
+  <tbody>
+    <tr><td><code>/dashboard</code></td><td>any</td><td>Balance, registered courses and level — or, for staff, department-wide counters and fee collection</td></tr>
+    <tr><td><code>/dashboard/profile</code></td><td>student</td><td><strong>Functionality 1</strong> — personal, contact, academic and next-of-kin details</td></tr>
+    <tr><td><code>/dashboard/fees</code></td><td>student</td><td><strong>Functionality 2</strong> — bills, itemised charges, payment history</td></tr>
+    <tr><td><code>/dashboard/courses</code></td><td>student</td><td><strong>Functionality 3</strong> — registered courses with lecturer and timetable</td></tr>
+    <tr><td><code>/dashboard/catalogue</code></td><td>any</td><td>Course offerings with live seat availability</td></tr>
+    <tr><td><code>/dashboard/students</code></td><td>staff</td><td><strong>Functionality 1</strong> — the student register</td></tr>
+    <tr><td><code>/dashboard/teaching</code></td><td>staff</td><td><strong>Functionalities 4 &amp; 5</strong> — teaching load and TA allocation</td></tr>
+    <tr><td><code>/dashboard/outstanding-fees</code></td><td>staff</td><td><strong>The required function</strong>, rendered as a report</td></tr>
+  </tbody>
+</table>
+<p>
+  Every one of these pages reads through <code>src/lib/queries.ts</code>, which
+  contains one wrapper per stored function. No fee arithmetic, capacity check or
+  hour cap is reimplemented in TypeScript — the numbers on screen are the numbers
+  the database computed.
+</p>
+
+<!-- ══════════════════════════ 7 ══════════════════════════ -->
+<h2 class="page-break">7. Assumptions Made</h2>
+<p>
+  The brief instructs: <em>"Make all necessary assumption on the database name,
+  schemas, tables and attributes."</em> Those made are recorded here rather than
+  left implicit.
+</p>
+<table>
+  <thead><tr><th style="width:26%">Area</th><th>Assumption and justification</th></tr></thead>
+  <tbody>
+    <tr><td>Database name</td><td><code>cpen208_ceds</code> — course code plus "Computer Engineering Department System".</td></tr>
+    <tr><td>Currency</td><td>Ghana Cedis (GHS), stored as <code>NUMERIC(12,2)</code>. Never floating point: <code>0.1 + 0.2 ≠ 0.3</code> in binary floating point, and fee balances must be exact.</td></tr>
+    <tr><td>Fee amounts</td><td>Illustrative but of a realistic order of magnitude for a publicly funded Ghanaian university. Real published figures were not available.</td></tr>
+    <tr><td>Billing period</td><td>One bill per student per <em>academic year</em>, not per semester, matching current University of Ghana practice.</td></tr>
+    <tr><td>What counts as paid</td><td>Only <code>confirmed</code> payments reduce the balance. This is the central rule of §3.</td></tr>
+    <tr><td>Course codes</td><td>CPEN 201/203/205/207/208, MATH 223 and UGRC 210 are a plausible Level-200 first-semester load. CPEN 208 is the one course named in the brief.</td></tr>
+    <tr><td>Class size</td><td>32 students, a realistic Level-200 Computer Engineering cohort.</td></tr>
+    <tr><td>"Lectures to TA assignment"</td><td>Read as <em>lecturers</em> to TA assignment. Modelled as TA → lecturer, optionally scoped to one course offering, since in practice the help is attached to a named course.</td></tr>
+    <tr><td>TA identity</td><td>A TA may also be a registered student. Handled by the person supertype rather than by duplicating personal data.</td></tr>
+    <tr><td>Bill dates</td><td>A bill's <code>issued_on</code> defaults to the first day of the academic year it charges for, not the day the script runs. Without this the scripts would fail when rebuilt after the due date — which is exactly what happened during development (§11).</td></tr>
+    <tr><td>Personal data</td><td>Synthetic apart from the author's own record. See §5.2.</td></tr>
+    <tr><td>Passwords</td><td>Every seeded account uses <code>Password123!</code>, hashed with bcrypt via pgcrypto's <code>crypt()</code>. Demonstration only; a real deployment would force a change on first login.</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════ 8 ══════════════════════════ -->
+<h2>8. Testing and Verification</h2>
+<p>
+  <code>07_verification.sql</code> produces the evidence that each requirement is
+  met. Running it against the delivered database gives the results below; the
+  complete 366-line output is in <code>docs/verification_output.txt</code>.
+</p>
+<table>
+  <thead><tr><th style="width:8%">§</th><th style="width:38%">Check</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Schemas created</td><td>5 schemas · 23 tables · 6 views · 23 functions</td></tr>
+    <tr><td>2</td><td>Functionality 1 — personal information</td><td>36 students; full JSON profile returned</td></tr>
+    <tr><td>3</td><td>Functionality 3 — enrolment</td><td>8 offerings; 32 enrolled per Level-200 course; 2 drops recorded</td></tr>
+    <tr><td>4</td><td>Functionality 4 — lecturer assignment</td><td>9 assignments; CPEN 208 has 1 lead + 1 co-lecturer</td></tr>
+    <tr><td>5</td><td>Functionality 5 — TA assignment</td><td>6 assignments; no TA over their contracted hours</td></tr>
+    <tr><td>6</td><td>Functionality 2 — fees</td><td>36 bills; billed, paid and outstanding per student</td></tr>
+    <tr><td>7a</td><td>Return type is a JSON array</td><td><code>array</code>, 36 elements <span class="tag green">pass</span></td></tr>
+    <tr><td>7d</td><td>Cross-check against independent SQL</td><td>36 compared · <strong>0 mismatches</strong> · difference 0.00 <span class="tag green">pass</span></td></tr>
+    <tr><td>7e</td><td>Filtered call — indebted only</td><td>21 of 36 students <span class="tag green">pass</span></td></tr>
+    <tr><td>7f</td><td>Pending / reversed payments excluded</td><td>Confirmed below <span class="tag green">pass</span></td></tr>
+  </tbody>
+</table>
+<p>Section 7f is worth showing in full, because it demonstrates the rule that matters most:</p>
+<pre> student_number |  receipt_number  | amount  |  status  | outstanding_balance
+----------------+------------------+---------+----------+---------------------
+ 22129027       | RCPT-2025-900001 | 1500.00 | pending  |             1788.00
+ 22129048       | RCPT-2025-900002 |  800.00 | reversed |                0.00</pre>
+<p>
+  Student 22129027 has a GH₵1,500.00 cheque lodged but not cleared; their balance
+  is unchanged by it. Student 22129048 had a GH₵800.00 transfer reversed; their
+  balance likewise ignores it. Had either been counted, both figures would be
+  wrong — and no constraint would have caught it. This is precisely why the check
+  is executed rather than merely asserted.
+</p>
+<p>
+  Beyond SQL, the Next.js application was exercised end to end in a browser:
+  signing in as <code>22128981</code>, reading the profile, fees and courses
+  pages, registering a new account linked to index 22129055, and signing in as
+  <code>admin</code> to view the outstanding-fees report. Each step was confirmed
+  against the database — the <code>REGISTER</code> and <code>LOGIN</code> rows in
+  <code>app.audit_log</code>, the 60-character <code>$2b$10$</code> bcrypt hash,
+  and the hashed session token with its seven-day expiry.
+</p>
+
+<!-- ══════════════════════════ 9 ══════════════════════════ -->
+<h2>9. Backup and Restore</h2>
+<p>
+  Four <code>pg_dump</code> outputs are provided in
+  <code>database/backup/</code>, so the marker can restore whichever suits:
+</p>
+<table>
+  <thead><tr><th style="width:34%">File</th><th style="width:12%" class="num">Size</th><th>Restore with</th></tr></thead>
+  <tbody>
+    <tr><td><code>cpen208_ceds_backup.sql</code></td><td class="num">244 KB</td><td><code>psql -d newdb -f cpen208_ceds_backup.sql</code></td></tr>
+    <tr><td><code>cpen208_ceds_backup.dump</code></td><td class="num">200 KB</td><td><code>pg_restore -d newdb --no-owner cpen208_ceds_backup.dump</code></td></tr>
+    <tr><td><code>cpen208_ceds_schema_only.sql</code></td><td class="num">135 KB</td><td>Structure without data</td></tr>
+    <tr><td><code>cpen208_ceds_data_only.sql</code></td><td class="num">92 KB</td><td>Data without structure</td></tr>
+  </tbody>
+</table>
+<p>
+  The plain-SQL backup was restored into a scratch database as part of preparing
+  this submission, and the required function was re-run there: it returned all 36
+  students correctly. A backup that has never been restored is only a hope, so
+  the restore was tested rather than assumed.
+</p>
+
+<!-- ══════════════════════════ 10 ══════════════════════════ -->
+<h2>10. How to Run Everything</h2>
+<pre class="light"><span class="c"># 1 — build the database (drops and recreates cpen208_ceds)</span>
+cd project-1/database && ./run_all.sh
+
+<span class="c"># 2 — the required function, on its own</span>
+psql -d cpen208_ceds -c "SELECT finance.fn_outstanding_fees_json();"
+
+<span class="c"># 3 — the full verification report</span>
+psql -d cpen208_ceds -f 07_verification.sql
+
+<span class="c"># 4 — the Next.js 14 application</span>
+cd ../web
+cp .env.example .env.local        <span class="c"># then set DATABASE_URL</span>
+npm install && npm run dev        <span class="c"># http://localhost:3000</span></pre>
+<p>
+  Demonstration accounts, all with the password <code>Password123!</code>:
+  <code>22128981</code> (student), <code>kadanquah</code> (lecturer),
+  <code>admin</code> (administrator).
+</p>
+
+<!-- ══════════════════════════ 11 ══════════════════════════ -->
+<h2 class="page-break">11. Challenges, Limitations and Future Work</h2>
+
+<h4>Challenges met during development</h4>
+<ul>
+  <li>
+    <strong>Bills dated relative to "today".</strong> The first run of the seed
+    script failed on <code>student_bill_due_ck</code>: <code>issued_on</code>
+    defaulted to the current date, which fell <em>after</em> the October 2025 due
+    date being loaded. Rather than move the due date, the fix was conceptual —
+    a bill belongs to the academic year it charges for, so
+    <code>fn_generate_student_bill</code> now defaults <code>issued_on</code> to
+    the first day of that year. The scripts are now reproducible however long
+    after the session they are run.
+  </li>
+  <li>
+    <strong>A negative balance.</strong> After adding an explicit instalment plan
+    for the author's record, the dashboard showed a balance of
+    <em>minus</em> GH₵1,412.00. The explicit payments were being added on top of
+    the pattern-generated ones rather than replacing them. The seed now excludes
+    that student from the generated pattern, and the verification suite gained a
+    check that no student's balance is ever negative.
+  </li>
+  <li>
+    <strong><code>CREATE OR REPLACE</code> does not replace a signature.</strong>
+    Adding a fourth parameter to <code>fn_generate_student_bill</code> created a
+    second <em>overload</em> instead of replacing the function, and the next call
+    failed as ambiguous. The script now drops the old signature explicitly, so it
+    remains re-runnable against a database built by an earlier version.
+  </li>
+  <li>
+    <strong>A <code>'use server'</code> file may export only async functions.</strong>
+    Exporting the shared form-state object from <code>actions.ts</code> compiled
+    cleanly but crashed at runtime on the first login. The type and constant moved
+    to <code>lib/formState.ts</code>.
+  </li>
+</ul>
+
+<h4>Limitations</h4>
+<ul>
+  <li>Grades are stored but there is no transcript or CGPA recalculation routine; <code>student.cgpa</code> is set from the sample data rather than derived.</li>
+  <li>Prerequisites are recorded but not enforced at registration; the trigger checks capacity, status and the registration window only.</li>
+  <li>There is no timetable-clash detection — a student may register for two courses meeting at the same hour.</li>
+  <li>Fee payment is recorded, not <em>taken</em>: there is no payment-gateway integration.</li>
+  <li>Row-level security is not enabled; access control lives in the application and API layers.</li>
+</ul>
+
+<h4>Future work</h4>
+<ul>
+  <li>Enforce prerequisites and timetable clashes inside <code>fn_enroll_student</code>, where every client would inherit them.</li>
+  <li>Add PostgreSQL row-level security so the database itself restricts a student to their own rows.</li>
+  <li>Partition <code>finance.payment</code> and <code>app.audit_log</code> by year once they grow.</li>
+  <li>Materialise the outstanding-fees report if the student population reaches a scale where per-request computation is measurable.</li>
+</ul>
+
+<!-- ══════════════════════════ 12 ══════════════════════════ -->
+<h2>12. Conclusion</h2>
+<p>
+  Every item in the Project 1 brief has been delivered: a PostgreSQL database
+  named <code>cpen208_ceds</code> with five purposeful schemas, 23 tables covering
+  all five required functionalities, insert scripts that populate every one of
+  them with the CPEN 208 class, and — the headline requirement —
+  <code>finance.fn_outstanding_fees_json()</code>, which calculates the
+  outstanding fees for each student and returns them as a JSON array. Alongside
+  it, a Next.js 14 application provides login, registration and a role-aware
+  dashboard, and four restore-tested backups accompany the scripts.
+</p>
+<p>
+  The decision that shaped everything else was to put the business rules in the
+  database rather than in application code. "Outstanding fees" is defined once,
+  in SQL, and is therefore the same number whether it is read from
+  <code>psql</code>, rendered on the dashboard, or — as Project 2 goes on to
+  show — returned over HTTP. Correctness was not asserted but demonstrated: the
+  function's output is cross-checked against independently written SQL for all
+  36 students, with zero mismatches, and the exclusion of pending and reversed
+  payments is proved against data planted specifically to test it.
+</p>
+
+<footer class="sig">
+  CPEN 208 · Introduction to Software Engineering · First Semester 2025/2026<br>
+  Gideon Elorm Glago · 22128981 · Department of Computer Engineering, University of Ghana<br>
+  PostgreSQL 16.13 · Next.js 14.2 · TypeScript 5
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CPEN 208 Project 2 Report — Gideon Elorm Glago (22128981)</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 16mm 16mm; }
+
+  :root {
+    --navy: #182a5e;
+    --navy-light: #2c4a93;
+    --gold: #b8860b;
+    --ink: #1a1a1a;
+    --muted: #5a6472;
+    --rule: #d5dae3;
+    --bg-soft: #f4f6fa;
+    --mono: "SF Mono", "Menlo", "Consolas", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 10.5pt; line-height: 1.55; color: var(--ink); margin: 0;
+  }
+
+  h1, h2, h3, h4 { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--navy); }
+  h1 { font-size: 20pt; margin: 0 0 4pt; letter-spacing: -0.3pt; }
+  h2 {
+    font-size: 13pt; margin: 22pt 0 8pt;
+    padding-bottom: 4pt; border-bottom: 1.5pt solid var(--navy);
+    page-break-after: avoid;
+  }
+  h3 { font-size: 11pt; margin: 14pt 0 5pt; page-break-after: avoid; }
+  h4 { font-size: 10pt; margin: 11pt 0 4pt; color: var(--navy-light); page-break-after: avoid; }
+  p { margin: 0 0 7pt; text-align: justify; }
+  ul, ol { margin: 0 0 8pt; padding-left: 18pt; }
+  li { margin-bottom: 3pt; }
+
+  code, .mono { font-family: var(--mono); font-size: 8.8pt; }
+  code { background: var(--bg-soft); padding: 0.5pt 3pt; border-radius: 2pt; }
+
+  pre {
+    font-family: var(--mono); font-size: 8pt; line-height: 1.42;
+    background: #10182c; color: #e6ecf7;
+    padding: 9pt 11pt; border-radius: 4pt;
+    overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;
+    margin: 7pt 0 10pt; page-break-inside: avoid;
+  }
+  pre.light { background: var(--bg-soft); color: var(--ink); border: 0.75pt solid var(--rule); }
+  pre .c { color: #8fa3c7; }
+
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 11pt; font-size: 9pt; page-break-inside: avoid; }
+  th, td { border: 0.5pt solid var(--rule); padding: 4pt 6pt; text-align: left; vertical-align: top; }
+  th { background: var(--navy); color: #fff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 8.5pt; }
+  tbody tr:nth-child(even) { background: #fafbfd; }
+  td.num, th.num { text-align: right; font-family: var(--mono); font-size: 8.5pt; }
+  td.mth { font-family: var(--mono); font-size: 8pt; font-weight: 700; }
+
+  .cover { text-align: center; padding-top: 34mm; page-break-after: always; }
+  .crest {
+    width: 66pt; height: 66pt; margin: 0 auto 14pt; border-radius: 50%;
+    background: var(--navy); color: #f5c04a; display: flex;
+    align-items: center; justify-content: center;
+    font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 20pt;
+  }
+  .cover .uni { font-size: 14pt; font-weight: 700; color: var(--navy); font-family: "Helvetica Neue", Arial, sans-serif; }
+  .cover .sub { font-size: 10.5pt; color: var(--muted); margin-top: 3pt; }
+  .cover .rule { width: 100pt; height: 2pt; background: var(--gold); margin: 18pt auto; }
+  .cover h1 { font-size: 22pt; margin-bottom: 6pt; }
+  .cover .course { font-size: 12pt; color: var(--navy-light); margin-bottom: 26pt; font-family: "Helvetica Neue", Arial, sans-serif; }
+  .cover table { width: 78%; margin: 0 auto; font-size: 10.5pt; }
+  .cover td { border: none; padding: 4pt 8pt; }
+  .cover td:first-child { text-align: right; color: var(--muted); width: 42%; }
+  .cover td:last-child { text-align: left; font-weight: 600; }
+
+  .callout { border-left: 3pt solid var(--gold); background: #fdf9ef; padding: 8pt 11pt; margin: 9pt 0 11pt; page-break-inside: avoid; }
+  .callout.navy { border-left-color: var(--navy-light); background: var(--bg-soft); }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout .lbl {
+    font-family: "Helvetica Neue", Arial, sans-serif; font-size: 8pt;
+    text-transform: uppercase; letter-spacing: 0.6pt; color: var(--gold);
+    font-weight: 700; display: block; margin-bottom: 3pt;
+  }
+  .callout.navy .lbl { color: var(--navy-light); }
+
+  .stats { display: flex; gap: 7pt; margin: 9pt 0 12pt; }
+  .stat { flex: 1; border: 0.75pt solid var(--rule); border-top: 2.5pt solid var(--navy); padding: 7pt; text-align: center; }
+  .stat .v { font-size: 15pt; font-weight: 700; color: var(--navy); font-family: "Helvetica Neue", Arial, sans-serif; display: block; }
+  .stat .l { font-size: 7.5pt; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4pt; font-family: "Helvetica Neue", Arial, sans-serif; }
+
+  .toc ol { list-style: none; padding-left: 0; counter-reset: s; }
+  .toc > ol > li { counter-increment: s; margin-bottom: 4pt; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 10pt; }
+  .toc > ol > li::before { content: counter(s) ". "; color: var(--gold); font-weight: 700; }
+  .toc ol ol { padding-left: 16pt; margin-top: 3pt; counter-reset: t; }
+  .toc ol ol li { counter-increment: t; font-size: 9pt; color: var(--muted); margin-bottom: 2pt; }
+  .toc ol ol li::before { content: counter(s) "." counter(t) " "; color: var(--navy-light); }
+
+  .page-break { page-break-before: always; }
+  figure { margin: 10pt 0 12pt; page-break-inside: avoid; }
+  figcaption { font-size: 8.5pt; color: var(--muted); text-align: center; margin-top: 5pt; font-family: "Helvetica Neue", Arial, sans-serif; }
+  svg { display: block; margin: 0 auto; max-width: 100%; }
+
+  .tag { display: inline-block; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 7.5pt; font-weight: 700; padding: 1pt 5pt; border-radius: 8pt; background: var(--navy); color: #fff; vertical-align: middle; }
+  .tag.gold { background: var(--gold); }
+  .tag.green { background: #2e7d52; }
+  .tag.get { background: #2e7d52; }
+  .tag.post { background: #1f6feb; }
+  .tag.del { background: #b03a3a; }
+
+  footer.sig { margin-top: 26pt; padding-top: 8pt; border-top: 0.5pt solid var(--rule); font-size: 8.5pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ COVER ══════════════════════════ -->
+<section class="cover">
+  <div class="crest">UG</div>
+  <div class="uni">UNIVERSITY OF GHANA</div>
+  <div class="sub">College of Basic and Applied Sciences</div>
+  <div class="sub">School of Engineering Sciences</div>
+  <div class="sub">Department of Computer Engineering</div>
+
+  <div class="rule"></div>
+
+  <div class="course">CPEN 208 — Introduction to Software Engineering</div>
+  <h1>Project 2</h1>
+  <p style="text-align:center; font-size:12pt; color:var(--muted); margin-bottom:26pt;">
+    A REST Web Service Implementing the Database Functions<br>
+    of the Computer Engineering Department System
+  </p>
+
+  <table>
+    <tr><td>Author</td><td>Gideon Elorm Glago</td></tr>
+    <tr><td>Index number</td><td>22128981</td></tr>
+    <tr><td>Programme</td><td>BSc Computer Engineering</td></tr>
+    <tr><td>Level</td><td>200</td></tr>
+    <tr><td>Semester</td><td>First Semester, 2025/2026</td></tr>
+    <tr><td>Service</td><td>Express 4 · TypeScript 5 · Node.js</td></tr>
+    <tr><td>Database</td><td>PostgreSQL 16.13</td></tr>
+    <tr><td>Tests</td><td>43 integration tests · all passing</td></tr>
+  </table>
+</section>
+
+<!-- ══════════════════════════ TOC ══════════════════════════ -->
+<h2 style="margin-top:0;">Table of Contents</h2>
+<nav class="toc">
+  <ol>
+    <li>Introduction
+      <ol><li>What the brief asks for</li><li>What "implements the functions" was taken to mean</li></ol>
+    </li>
+    <li>Architecture
+      <ol><li>Where the logic lives</li><li>Request lifecycle</li><li>Technology choices</li></ol>
+    </li>
+    <li>API Design
+      <ol><li>Conventions</li><li>The complete endpoint catalogue</li><li>Endpoint-to-function mapping</li></ol>
+    </li>
+    <li>The Required Function over HTTP</li>
+    <li>Authentication and Authorisation
+      <ol><li>JWT issuance</li><li>The authorisation matrix</li></ol>
+    </li>
+    <li>Validation and Error Handling
+      <ol><li>Request validation</li><li>Translating SQLSTATE to HTTP</li></ol>
+    </li>
+    <li>Security Measures</li>
+    <li>Testing
+      <ol><li>Strategy</li><li>Results</li><li>Tests that matter most</li></ol>
+    </li>
+    <li>Live Demonstration</li>
+    <li>Database Scripts and Backup</li>
+    <li>How to Run It</li>
+    <li>Limitations and Future Work</li>
+    <li>Conclusion</li>
+  </ol>
+</nav>
+
+<!-- ══════════════════════════ 1 ══════════════════════════ -->
+<h2 class="page-break">1. Introduction</h2>
+
+<h3>1.1 What the brief asks for</h3>
+<div class="callout">
+  <span class="lbl">The requirement, verbatim</span>
+  <p>
+    "Develop an API/web service that implements the functions you created in
+    Project 1." Submission must include the source code of the API/web service,
+    all scripts used to create the database, a backup of the database, and a
+    report.
+  </p>
+</div>
+<p>
+  Project 1 produced a PostgreSQL database, <code>cpen208_ceds</code>, holding the
+  Computer Engineering Department's student records, fees, course registrations
+  and teaching assignments — together with 19 callable stored functions,
+  the most important of which returns every student's outstanding fees as a JSON
+  array. Project 2 puts that database on the network.
+</p>
+
+<h3>1.2 What "implements the functions" was taken to mean</h3>
+<p>
+  There are two readings of the brief. The weak reading is: build an API that
+  <em>does the same things</em> the Project 1 functions do — re-deriving the
+  outstanding balance in JavaScript, re-checking class capacity in JavaScript,
+  and so on. The strong reading is: build an API that <em>calls</em> those
+  functions, so that the rules exist in exactly one place.
+</p>
+<p>
+  This project takes the strong reading, deliberately. Under the weak reading the
+  system would contain two independent definitions of "outstanding fees" — one in
+  SQL and one in TypeScript — and they would eventually disagree. The bug would
+  surface as the dashboard and the API quoting different balances for the same
+  student, and it would be nobody's obvious responsibility to fix. Under the
+  strong reading that class of bug cannot occur.
+</p>
+<div class="callout navy">
+  <span class="lbl">The design rule this project follows</span>
+  <p>
+    The API performs <strong>no business arithmetic of its own</strong>. Its
+    responsibilities are transport, authentication, authorisation, input
+    validation and error translation. Every figure it returns and every rule it
+    enforces comes from a Project 1 stored function.
+  </p>
+</div>
+
+<div class="stats">
+  <div class="stat"><span class="v">24</span><span class="l">Endpoints</span></div>
+  <div class="stat"><span class="v">16</span><span class="l">DB functions used</span></div>
+  <div class="stat"><span class="v">43</span><span class="l">Tests passing</span></div>
+  <div class="stat"><span class="v">5</span><span class="l">Functionalities</span></div>
+  <div class="stat"><span class="v">0</span><span class="l">Rules duplicated</span></div>
+</div>
+
+<!-- ══════════════════════════ 2 ══════════════════════════ -->
+<h2>2. Architecture</h2>
+
+<h3>2.1 Where the logic lives</h3>
+<figure>
+<svg viewBox="0 0 720 330" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0.5 L7,4 L0,7.5 z" fill="#5a6472"/>
+    </marker>
+  </defs>
+  <style>
+    .bx { stroke-width:1.2; rx:4; }
+    .t1 { font-size:10px; font-weight:700; }
+    .t2 { font-size:8px; }
+    .ar { stroke:#5a6472; stroke-width:1.2; fill:none; marker-end:url(#ar); }
+    .cap { font-size:7.5px; fill:#5a6472; }
+  </style>
+
+  <!-- clients -->
+  <rect class="bx" x="14" y="20" width="120" height="34" fill="#fff" stroke="#5a6472"/>
+  <text class="t1" x="74" y="35" text-anchor="middle" fill="#1a1a1a">HTTP client</text>
+  <text class="t2" x="74" y="46" text-anchor="middle" fill="#5a6472">curl · Postman · mobile</text>
+
+  <rect class="bx" x="14" y="66" width="120" height="34" fill="#fff" stroke="#5a6472"/>
+  <text class="t1" x="74" y="81" text-anchor="middle" fill="#1a1a1a">Next.js 14 app</text>
+  <text class="t2" x="74" y="92" text-anchor="middle" fill="#5a6472">Project 1, Question 2</text>
+
+  <!-- API layers -->
+  <rect class="bx" x="192" y="14" width="238" height="230" fill="#f4f6fa" stroke="#2c4a93"/>
+  <text class="t1" x="311" y="30" text-anchor="middle" fill="#182a5e">CEDS REST API — Project 2</text>
+
+  <rect class="bx" x="206" y="40" width="210" height="26" fill="#fff" stroke="#8099cb"/>
+  <text class="t2" x="311" y="51" text-anchor="middle" fill="#182a5e" font-weight="700">helmet · CORS · rate limit · body cap</text>
+  <text class="cap" x="311" y="61" text-anchor="middle">edge concerns</text>
+
+  <rect class="bx" x="206" y="74" width="210" height="26" fill="#fff" stroke="#8099cb"/>
+  <text class="t2" x="311" y="85" text-anchor="middle" fill="#182a5e" font-weight="700">requireAuth · requireRole · requireSelfOrStaff</text>
+  <text class="cap" x="311" y="95" text-anchor="middle">who are you, and may you?</text>
+
+  <rect class="bx" x="206" y="108" width="210" height="26" fill="#fff" stroke="#8099cb"/>
+  <text class="t2" x="311" y="119" text-anchor="middle" fill="#182a5e" font-weight="700">zod schema validation + coercion</text>
+  <text class="cap" x="311" y="129" text-anchor="middle">is the request well-formed?</text>
+
+  <rect class="bx" x="206" y="142" width="210" height="26" fill="#fff" stroke="#8099cb"/>
+  <text class="t2" x="311" y="153" text-anchor="middle" fill="#182a5e" font-weight="700">routes → services (one wrapper per function)</text>
+  <text class="cap" x="311" y="163" text-anchor="middle">parameterised SQL call only</text>
+
+  <rect class="bx" x="206" y="176" width="210" height="26" fill="#fff" stroke="#8099cb"/>
+  <text class="t2" x="311" y="187" text-anchor="middle" fill="#182a5e" font-weight="700">errors.ts — SQLSTATE → HTTP status</text>
+  <text class="cap" x="311" y="197" text-anchor="middle">404 · 409 · 422 · 503</text>
+
+  <rect class="bx" x="206" y="210" width="210" height="24" fill="#fff" stroke="#8099cb"/>
+  <text class="t2" x="311" y="225" text-anchor="middle" fill="#182a5e" font-weight="700">one JSON envelope for every response</text>
+
+  <!-- database -->
+  <rect class="bx" x="488" y="14" width="218" height="230" fill="#fff" stroke="#b03a3a"/>
+  <text class="t1" x="597" y="30" text-anchor="middle" fill="#b03a3a">PostgreSQL — Project 1</text>
+
+  <rect class="bx" x="500" y="40" width="194" height="72" fill="#fdf3f3" stroke="#d99"/>
+  <text class="t2" x="597" y="54" text-anchor="middle" font-weight="700" fill="#8a2a2a">STORED FUNCTIONS — the rules</text>
+  <text class="t2" x="510" y="68" fill="#3c4756">fn_outstanding_fees_json()</text>
+  <text class="t2" x="510" y="80" fill="#3c4756">fn_enroll_student()</text>
+  <text class="t2" x="510" y="92" fill="#3c4756">fn_assign_ta_to_lecturer()</text>
+  <text class="t2" x="510" y="104" fill="#3c4756">… 16 in total</text>
+
+  <rect class="bx" x="500" y="122" width="194" height="52" fill="#fdf3f3" stroke="#d99"/>
+  <text class="t2" x="597" y="136" text-anchor="middle" font-weight="700" fill="#8a2a2a">TRIGGERS &amp; CONSTRAINTS</text>
+  <text class="t2" x="510" y="150" fill="#3c4756">capacity · hour caps · bill totals</text>
+  <text class="t2" x="510" y="162" fill="#3c4756">37 CHECKs · 36 foreign keys</text>
+
+  <rect class="bx" x="500" y="184" width="194" height="50" fill="#fdf3f3" stroke="#d99"/>
+  <text class="t2" x="597" y="198" text-anchor="middle" font-weight="700" fill="#8a2a2a">23 TABLES · 5 SCHEMAS</text>
+  <text class="t2" x="510" y="212" fill="#3c4756">core · people · academics</text>
+  <text class="t2" x="510" y="224" fill="#3c4756">finance · app</text>
+
+  <!-- arrows -->
+  <path class="ar" d="M136,37 L188,37"/>
+  <path class="ar" d="M136,83 L188,83"/>
+  <path class="ar" d="M136,90 C160,140 160,200 300,300" stroke-dasharray="3 3"/>
+  <path class="ar" d="M432,128 L484,128"/>
+
+  <text class="cap" x="310" y="316" text-anchor="anchor">The Next.js app calls the same stored functions directly — one set of rules, two clients</text>
+</svg>
+<figcaption>
+  Figure 1 — Layered architecture. The API is a transport and policy layer; every
+  business rule lives in PostgreSQL and is shared with the Next.js application.
+</figcaption>
+</figure>
+
+<h3>2.2 Request lifecycle</h3>
+<p>A request for the outstanding-fees report passes through seven stages:</p>
+<ol>
+  <li><strong>Edge middleware</strong> — <code>helmet</code> sets security headers, CORS is checked against the allow-list, the rate limiter counts the request, and the body size is capped at 100 kB.</li>
+  <li><strong>Authentication</strong> — <code>requireAuth</code> extracts the Bearer token and verifies its signature, issuer, audience and expiry.</li>
+  <li><strong>Authorisation</strong> — <code>requireRole('admin', 'lecturer')</code> rejects students with 403.</li>
+  <li><strong>Validation</strong> — the zod schema parses and <em>coerces</em> the query string, so <code>?indebtedOnly=true</code> becomes a real boolean.</li>
+  <li><strong>Service</strong> — <code>getOutstandingFees()</code> issues one parameterised call: <code>SELECT finance.fn_outstanding_fees_json($1,$2,$3)</code>.</li>
+  <li><strong>Response</strong> — the JSON array is wrapped in the standard envelope with a <code>count</code> and the name of the source function.</li>
+  <li><strong>Errors</strong> — anything thrown along the way reaches one error handler, which maps it to a status code and a machine-readable code.</li>
+</ol>
+
+<h3>2.3 Technology choices</h3>
+<table>
+  <thead><tr><th style="width:22%">Concern</th><th style="width:24%">Choice</th><th>Why this one</th></tr></thead>
+  <tbody>
+    <tr><td>Runtime</td><td>Node.js 18+</td><td>Same runtime as the Next.js app, so one toolchain across both projects</td></tr>
+    <tr><td>Framework</td><td>Express 4</td><td>Small, explicit, and its middleware model maps cleanly onto the seven stages above</td></tr>
+    <tr><td>Language</td><td>TypeScript, strict</td><td>The shapes returned by the database functions are declared once and checked at compile time</td></tr>
+    <tr><td>Database driver</td><td><code>pg</code> with a pool</td><td>No ORM: the queries are stored functions, and an ORM would add a translation layer over SQL written by hand on purpose</td></tr>
+    <tr><td>Auth</td><td><code>jsonwebtoken</code> (HS256)</td><td>Stateless tokens suit an API consumed by many clients; the browser app keeps its own revocable sessions</td></tr>
+    <tr><td>Validation</td><td><code>zod</code></td><td>Strict schemas reject unknown keys instead of ignoring them</td></tr>
+    <tr><td>Tests</td><td><code>node:test</code> + <code>fetch</code></td><td>No test framework dependency; boots the real app against the real database</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════ 3 ══════════════════════════ -->
+<h2 class="page-break">3. API Design</h2>
+
+<h3>3.1 Conventions</h3>
+<p>
+  The base path is <code>/api/v1</code>, versioned from the first commit so a
+  future v2 can run alongside without breaking existing clients. Every successful
+  response shares one envelope, and every failure shares another, so a client
+  never has to guess at the shape:
+</p>
+<pre><span class="c">// success</span>
+{ "success": true,
+  "data": [ ... ],
+  "meta": { "count": 36, "source": "finance.fn_outstanding_fees_json()",
+            "timestamp": "2026-08-03T20:18:09.793Z" } }
+
+<span class="c">// failure</span>
+{ "success": false,
+  "error": { "code": "CHECK_VIOLATION",
+             "message": "Assignment would put TA 3 at 40 hours/week, above the contracted maximum of 12" },
+  "meta": { "path": "/api/v1/teaching/ta-assignments", "method": "POST",
+            "timestamp": "2026-08-03T20:18:09.793Z" } }</pre>
+<p>
+  <code>GET /api/v1</code> returns a self-describing index of every endpoint at
+  runtime, so the service documents itself rather than relying on documentation
+  that can go stale.
+</p>
+
+<h3>3.2 The complete endpoint catalogue</h3>
+<table>
+  <thead><tr><th style="width:9%">Method</th><th style="width:40%">Path</th><th style="width:16%">Access</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1</code></td><td>public</td><td>Endpoint index</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/health</code></td><td>public</td><td>Liveness + database connectivity</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/stats</code></td><td>staff</td><td>Dashboard counters</td></tr>
+    <tr><td class="mth"><span class="tag post">POST</span></td><td><code>/api/v1/auth/register</code></td><td>public</td><td>Create an account</td></tr>
+    <tr><td class="mth"><span class="tag post">POST</span></td><td><code>/api/v1/auth/login</code></td><td>public</td><td>Obtain a JWT</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/auth/me</code></td><td>any</td><td>Resolve the current token</td></tr>
+    <tr><td colspan="4" style="background:#eef2f9; font-weight:700; color:#182a5e;">Functionality 1 — Student personal information</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/students</code></td><td>staff</td><td>Student directory, filterable</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/students/:studentId</code></td><td>self or staff</td><td>Full personal record</td></tr>
+    <tr><td colspan="4" style="background:#eef2f9; font-weight:700; color:#182a5e;">Functionality 2 — Student fees payments</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/fees/outstanding</code> <span class="tag gold">required</span></td><td>staff</td><td>Outstanding fees for every student</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/fees/summary</code></td><td>staff</td><td>Department collection statistics</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/students/:studentId/fees</code></td><td>self or staff</td><td>Full fee statement</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/students/:studentId/balance</code></td><td>self or staff</td><td>Balance only</td></tr>
+    <tr><td class="mth"><span class="tag post">POST</span></td><td><code>/api/v1/fees/bills</code></td><td>admin</td><td>Generate a bill</td></tr>
+    <tr><td class="mth"><span class="tag post">POST</span></td><td><code>/api/v1/fees/payments</code></td><td>admin</td><td>Record a payment</td></tr>
+    <tr><td colspan="4" style="background:#eef2f9; font-weight:700; color:#182a5e;">Functionality 3 — Course enrollment</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/enrollments/offerings</code></td><td>any</td><td>Catalogue with seat counts</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>…/offerings/:offeringId/class-list</code></td><td>staff</td><td>Class register</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/students/:studentId/enrollments</code></td><td>self or staff</td><td>A student's courses</td></tr>
+    <tr><td class="mth"><span class="tag post">POST</span></td><td><code>/api/v1/enrollments</code></td><td>self or admin</td><td>Register for a course</td></tr>
+    <tr><td class="mth"><span class="tag del">DEL</span></td><td><code>/api/v1/enrollments</code></td><td>self or admin</td><td>Withdraw from a course</td></tr>
+    <tr><td colspan="4" style="background:#eef2f9; font-weight:700; color:#182a5e;">Functionality 4 — Lecturer to course assignment</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/teaching/lecturers</code></td><td>any</td><td>All lecturers</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/teaching/assignments</code></td><td>any</td><td>All allocations</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>…/lecturers/:lecturerId/workload</code></td><td>any</td><td>Workload with nested TAs</td></tr>
+    <tr><td class="mth"><span class="tag post">POST</span></td><td><code>/api/v1/teaching/assignments</code></td><td>admin</td><td>Assign a lecturer</td></tr>
+    <tr><td colspan="4" style="background:#eef2f9; font-weight:700; color:#182a5e;">Functionality 5 — Lecturer to TA assignment</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/teaching/assistants</code></td><td>any</td><td>TA pool with committed hours</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/teaching/ta-assignments</code></td><td>any</td><td>All TA assignments</td></tr>
+    <tr><td class="mth"><span class="tag post">POST</span></td><td><code>/api/v1/teaching/ta-assignments</code></td><td>admin / lecturer</td><td>Assign a TA</td></tr>
+    <tr><td colspan="4" style="background:#eef2f9; font-weight:700; color:#182a5e;">Reference data</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/reference/programmes</code></td><td>any</td><td>Degree programmes</td></tr>
+    <tr><td class="mth"><span class="tag get">GET</span></td><td><code>/api/v1/reference/semesters</code></td><td>any</td><td>Academic calendar</td></tr>
+  </tbody>
+</table>
+
+<h3>3.3 Endpoint-to-function mapping</h3>
+<p>
+  This is the table that answers the brief most directly: each endpoint and the
+  Project 1 function it invokes.
+</p>
+<table>
+  <thead><tr><th style="width:44%">Endpoint</th><th>Project 1 stored function</th></tr></thead>
+  <tbody>
+    <tr><td><code>GET /fees/outstanding</code></td><td><code>finance.fn_outstanding_fees_json()</code></td></tr>
+    <tr><td><code>GET /fees/summary</code></td><td><code>finance.fn_fees_summary_json()</code></td></tr>
+    <tr><td><code>GET /students</code></td><td><code>people.fn_students_json()</code></td></tr>
+    <tr><td><code>GET /students/:id</code></td><td><code>people.fn_student_profile_json()</code></td></tr>
+    <tr><td><code>GET /students/:id/fees</code></td><td><code>finance.fn_student_fee_statement_json()</code></td></tr>
+    <tr><td><code>GET /students/:id/balance</code></td><td><code>finance.fn_student_outstanding_balance()</code></td></tr>
+    <tr><td><code>POST /fees/bills</code></td><td><code>finance.fn_generate_student_bill()</code></td></tr>
+    <tr><td><code>POST /fees/payments</code></td><td><code>finance.fn_record_payment()</code></td></tr>
+    <tr><td><code>GET /students/:id/enrollments</code></td><td><code>academics.fn_student_enrollments_json()</code></td></tr>
+    <tr><td><code>GET …/class-list</code></td><td><code>academics.fn_class_list_json()</code></td></tr>
+    <tr><td><code>POST /enrollments</code></td><td><code>academics.fn_enroll_student()</code></td></tr>
+    <tr><td><code>DELETE /enrollments</code></td><td><code>academics.fn_drop_enrollment()</code></td></tr>
+    <tr><td><code>GET …/lecturers/:id/workload</code></td><td><code>academics.fn_lecturer_workload_json()</code></td></tr>
+    <tr><td><code>POST /teaching/assignments</code></td><td><code>academics.fn_assign_lecturer_to_course()</code></td></tr>
+    <tr><td><code>GET /teaching/ta-assignments</code></td><td><code>academics.fn_ta_assignments_json()</code></td></tr>
+    <tr><td><code>POST /teaching/ta-assignments</code></td><td><code>academics.fn_assign_ta_to_lecturer()</code></td></tr>
+    <tr><td><code>POST /auth/register</code></td><td><code>app.fn_register_user()</code></td></tr>
+    <tr><td><code>GET /auth/me</code></td><td><code>app.fn_user_context_json()</code></td></tr>
+    <tr><td><code>GET /stats</code></td><td><code>app.fn_dashboard_stats_json()</code></td></tr>
+  </tbody>
+</table>
+<p>
+  The remaining endpoints — the course catalogue, the lecturer list, the TA list
+  and the reference data — read the Project 1 <em>views</em>
+  (<code>v_course_offering_summary</code>,
+  <code>v_lecturer_course_allocation</code>) rather than functions, for the same
+  reason: the join is already written and tested in the database.
+</p>
+
+<!-- ══════════════════════════ 4 ══════════════════════════ -->
+<h2 class="page-break">4. The Required Function over HTTP</h2>
+<p>
+  The headline endpoint returns, unmodified, the JSON array produced by the
+  Project 1 function. The entire service-layer implementation is four lines:
+</p>
+<pre>export function getOutstandingFees(filters: {
+  academicYearId?: number; programmeId?: number; indebtedOnly?: boolean;
+}) {
+  return callJson('finance.fn_outstanding_fees_json($1, $2, $3)', [
+    filters.academicYearId ?? null,
+    filters.programmeId ?? null,
+    filters.indebtedOnly ?? false,
+  ]);
+}</pre>
+<p>
+  There is no <code>reduce</code>, no subtraction and no rounding in TypeScript.
+  The three optional query parameters map one-to-one onto the function's three
+  optional arguments, so the HTTP surface offers exactly the flexibility the
+  function already had, and nothing more.
+</p>
+
+<h4>Request</h4>
+<pre class="light">GET /api/v1/fees/outstanding?indebtedOnly=true HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…</pre>
+
+<h4>Response (abridged)</h4>
+<pre>{
+  "success": true,
+  "data": [
+    {
+      "student_id": 3,
+      "student_number": "21047733",
+      "full_name": "Belinda Nana Yaa Addo",
+      "email": "belinda.addo@st.ug.edu.gh",
+      "programme": "BSc Computer Engineering",
+      "level": 400,
+      "currency": "GHS",
+      "total_billed": 6880,
+      "total_paid": 0,
+      "outstanding_balance": 6880,
+      "percentage_paid": 0,
+      "payment_status": "NO PAYMENT",
+      "last_payment_date": null,
+      "bill_count": 1,
+      "bills": [
+        { "bill_id": 3, "bill_reference": "BILL-20252026-00003",
+          "academic_year": "2025/2026", "amount_billed": 6880,
+          "amount_paid": 0, "balance": 6880, "due_date": "2025-10-31",
+          "bill_status": "overdue", "payments_recorded": 0, "is_overdue": true }
+      ]
+    }
+    <span class="c">// … 35 more students</span>
+  ],
+  "meta": { "count": 36,
+            "source": "finance.fn_outstanding_fees_json()",
+            "filters": { "indebtedOnly": false },
+            "timestamp": "2026-08-03T20:17:37.9Z" }
+}</pre>
+<p>
+  The <code>meta.source</code> field names the database function that produced
+  the payload. That is not decoration: it makes the claim in §1.2 checkable by
+  anyone reading a response, and it means a consumer investigating a suspicious
+  figure knows exactly which SQL to read.
+</p>
+
+<!-- ══════════════════════════ 5 ══════════════════════════ -->
+<h2>5. Authentication and Authorisation</h2>
+
+<h3>5.1 JWT issuance</h3>
+<p>
+  <code>POST /api/v1/auth/login</code> accepts a username, index number or e-mail
+  with a password. The service loads the account, compares the supplied password
+  against the stored bcrypt hash, and on success signs a JWT containing the user
+  id, username, role, and — importantly — the resolved <code>studentId</code> and
+  <code>lecturerId</code>.
+</p>
+<p>
+  Carrying those two ids in the token is what makes per-record authorisation cheap:
+  deciding whether a caller may read <code>/students/42</code> is then a comparison
+  against the token, not an extra database round trip on every request.
+</p>
+<p>
+  An unknown username and a wrong password produce the <em>identical</em>
+  response. The unknown-user branch even performs a dummy bcrypt comparison, so
+  the two paths take comparable time and the endpoint cannot be used to discover
+  which accounts exist. This is asserted by a test that compares the two error
+  messages directly.
+</p>
+
+<h3>5.2 The authorisation matrix</h3>
+<table>
+  <thead><tr><th style="width:36%">Capability</th><th style="width:16%">Student</th><th style="width:16%">Lecturer</th><th style="width:16%">TA</th><th>Admin</th></tr></thead>
+  <tbody>
+    <tr><td>Read own profile, fees, courses</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+    <tr><td>Read another student's record</td><td><strong>no</strong></td><td>yes</td><td>no</td><td>yes</td></tr>
+    <tr><td>List the student directory</td><td><strong>no</strong></td><td>yes</td><td>no</td><td>yes</td></tr>
+    <tr><td>Outstanding-fees report</td><td><strong>no</strong></td><td>yes</td><td>no</td><td>yes</td></tr>
+    <tr><td>Register / withdraw self</td><td>yes</td><td>—</td><td><strong>no</strong></td><td>yes</td></tr>
+    <tr><td>Register another student</td><td><strong>no</strong></td><td>no</td><td>no</td><td>yes</td></tr>
+    <tr><td>Read a class list</td><td>no</td><td>yes</td><td>yes</td><td>yes</td></tr>
+    <tr><td>Assign a lecturer to a course</td><td>no</td><td>no</td><td>no</td><td>yes</td></tr>
+    <tr><td>Assign a TA</td><td>no</td><td>own courses only</td><td>no</td><td>yes</td></tr>
+    <tr><td>Record a payment / generate a bill</td><td>no</td><td>no</td><td>no</td><td>yes</td></tr>
+  </tbody>
+</table>
+<p>
+  Three guards implement the whole matrix. <code>requireAuth</code> establishes
+  identity; <code>requireRole(...)</code> handles the coarse cases; and
+  <code>requireSelfOrStaff('studentId')</code> handles the row-level case — a
+  student may read <code>/students/:id</code> only when the id in the path equals
+  the <code>studentId</code> in their own token.
+</p>
+
+<!-- ══════════════════════════ 6 ══════════════════════════ -->
+<h2>6. Validation and Error Handling</h2>
+
+<h3>6.1 Request validation</h3>
+<p>
+  Every body, query string and path parameter is parsed by a zod schema before a
+  handler runs. The schemas are <strong>strict</strong>: an unrecognised key is
+  rejected rather than silently ignored, so a client that misspells a field
+  learns about it immediately instead of wondering why the value had no effect.
+  Validation also <em>coerces</em>, which matters because everything in a URL is
+  a string — <code>?indebtedOnly=true</code> reaches the handler as a boolean and
+  <code>/students/42</code> as a number.
+</p>
+<pre class="light">POST /api/v1/fees/payments
+{ "studentId": 1, "billId": 1, "amount": -100, "method": "bitcoin" }
+
+<span class="c">→ HTTP 400</span>
+{ "success": false,
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "Invalid request body.",
+    "details": [
+      { "field": "amount", "message": "Too small: expected number to be >0" },
+      { "field": "method",
+        "message": "Invalid option: expected one of \"bank_transfer\"|\"mobile_money\"|…" }
+    ] } }</pre>
+<p>
+  Note that <em>both</em> problems are reported at once. Returning only the first
+  error would force a client into a guess-and-retry loop.
+</p>
+
+<h3>6.2 Translating SQLSTATE to HTTP</h3>
+<p>
+  Because the rules live in the database, the API must turn a database rejection
+  into a sensible HTTP answer. The Project 1 functions raise errors with
+  meaningful SQLSTATE codes, and <code>src/errors.ts</code> maps them:
+</p>
+<table>
+  <thead><tr><th style="width:14%">SQLSTATE</th><th style="width:28%">Meaning</th><th style="width:10%">HTTP</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code>P0002</code></td><td><code>no_data_found</code></td><td>404</td><td>Unknown student id</td></tr>
+    <tr><td><code>23505</code></td><td><code>unique_violation</code></td><td>409</td><td>Duplicate registration; second lead lecturer</td></tr>
+    <tr><td><code>23503</code></td><td>foreign key violation</td><td>409</td><td>Reference to a non-existent offering</td></tr>
+    <tr><td><code>23514</code></td><td><code>check_violation</code></td><td>422</td><td>TA over their contracted weekly hours</td></tr>
+    <tr><td><code>22P02</code></td><td>invalid input syntax</td><td>400</td><td>A non-numeric id reaching the database</td></tr>
+    <tr><td><code>08006</code>, <code>57P01</code></td><td>connection failure</td><td>503</td><td>Database restarting</td></tr>
+  </tbody>
+</table>
+<p>
+  Anything unmapped becomes a 500 with a generic message — the raw driver error
+  is logged server-side but never returned, so internal structure is not leaked
+  to a caller. Stack traces appear in responses only when <code>NODE_ENV</code>
+  is not <code>production</code>.
+</p>
+<div class="callout navy">
+  <span class="lbl">The payoff</span>
+  <p>
+    "A teaching assistant may not exceed their contracted weekly hours" is
+    written once, in <code>academics.fn_assign_ta_to_lecturer</code>. It is
+    enforced identically for <code>psql</code>, for the Next.js dashboard, and
+    for an HTTP client — and through HTTP it arrives as a correct
+    <strong>422 Unprocessable Entity</strong> carrying the database's own
+    explanatory message. Nothing about that rule is written in TypeScript.
+  </p>
+</div>
+
+<!-- ══════════════════════════ 7 ══════════════════════════ -->
+<h2 class="page-break">7. Security Measures</h2>
+<table>
+  <thead><tr><th style="width:26%">Control</th><th>Implementation</th></tr></thead>
+  <tbody>
+    <tr><td>SQL injection</td><td>Every value is a bound parameter (<code>$1, $2, …</code>). No user input is ever concatenated into SQL.</td></tr>
+    <tr><td>Password storage</td><td>bcrypt, cost 10. Plain passwords are never stored, logged, or returned.</td></tr>
+    <tr><td>Account enumeration</td><td>Unknown user and wrong password return identical responses; a dummy hash comparison equalises timing.</td></tr>
+    <tr><td>Brute force</td><td>Global limit 300 requests / 15 min; <strong>20</strong> on <code>/auth/*</code>. Failed attempts are counted on the account.</td></tr>
+    <tr><td>Transport headers</td><td><code>helmet</code> with a strict Content-Security-Policy; <code>x-powered-by</code> disabled.</td></tr>
+    <tr><td>CORS</td><td>Explicit allow-list from <code>CORS_ORIGINS</code>; the wildcard is a development default only.</td></tr>
+    <tr><td>Payload size</td><td>Bodies capped at 100 kB — nothing this API accepts is large.</td></tr>
+    <tr><td>Token integrity</td><td>Issuer and audience are verified alongside the signature, so a token minted for another service is rejected.</td></tr>
+    <tr><td>Secret management</td><td><code>JWT_SECRET</code> is <em>mandatory</em> in production — the service refuses to start without it. <code>.env</code> is git-ignored.</td></tr>
+    <tr><td>Least privilege</td><td>Guards on every non-public route; students are confined to their own rows.</td></tr>
+    <tr><td>Auditability</td><td>Logins, registrations, enrolments, payments and assignments are written to <code>app.audit_log</code>.</td></tr>
+    <tr><td>Information leakage</td><td>Unmapped database errors return a generic message; stack traces are suppressed in production.</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════ 8 ══════════════════════════ -->
+<h2>8. Testing</h2>
+
+<h3>8.1 Strategy</h3>
+<p>
+  The suite contains <strong>integration</strong> tests, not mocked unit tests.
+  That is a deliberate choice: the entire claim of this project is that the API
+  faithfully exposes the Project 1 database functions. A mock of the database
+  would be a mock of the very thing under test, and would pass happily while the
+  real SQL was broken. The tests therefore boot the real Express application
+  against the real <code>cpen208_ceds</code> database.
+</p>
+<p>
+  The app is exported from <code>src/app.ts</code> separately from
+  <code>src/index.ts</code>, which owns <code>listen()</code>. This lets the
+  suite start the service on an ephemeral port in-process rather than spawning a
+  second one. The suite is read-mostly; the single write it performs — registering
+  a throwaway account — is removed in the teardown hook.
+</p>
+
+<h3>8.2 Results</h3>
+<pre class="light">$ npm test
+
+▶ service metadata                    ✔ 3 tests
+▶ authentication                      ✔ 7 tests
+▶ functionality 1 - student personal information   ✔ 6 tests
+▶ functionality 2 - student fees payments          ✔ 9 tests
+▶ functionality 3 - course enrollment              ✔ 6 tests
+▶ functionality 4 - lecturer to course assignment  ✔ 5 tests
+▶ functionality 5 - lecturer to TA assignment      ✔ 4 tests
+▶ reference data                                   ✔ 1 test
+
+ℹ tests 43
+ℹ pass  43
+ℹ fail  0
+ℹ duration_ms 1231.32</pre>
+<div class="stats">
+  <div class="stat"><span class="v">43</span><span class="l">Tests</span></div>
+  <div class="stat"><span class="v">43</span><span class="l">Passing</span></div>
+  <div class="stat"><span class="v">0</span><span class="l">Failing</span></div>
+  <div class="stat"><span class="v">8</span><span class="l">Suites</span></div>
+  <div class="stat"><span class="v">1.2 s</span><span class="l">Runtime</span></div>
+</div>
+
+<h3>8.3 Tests that matter most</h3>
+<p>
+  Any suite can assert that a 200 is a 200. These are the cases that would
+  actually catch a regression:
+</p>
+<table>
+  <thead><tr><th style="width:44%">Test</th><th>What it protects against</th></tr></thead>
+  <tbody>
+    <tr><td>Re-derives <code>outstanding = billed − paid</code> for <em>every</em> row of the report</td><td>A silent arithmetic regression in the SQL — the single most consequential figure in the system</td></tr>
+    <tr><td>Asserts no student's balance is ever negative</td><td>The exact double-payment bug found during Project 1 development</td></tr>
+    <tr><td>Asserts the fee statement and the balance endpoint agree</td><td>Two functions drifting apart</td></tr>
+    <tr><td>Confirms pending/reversed payments are excluded, by querying the fixture first</td><td>The central fees rule; the test fails loudly if the fixture ever stops containing an unconfirmed payment</td></tr>
+    <tr><td><code>seats_left = capacity − enrolled</code> for every offering</td><td>An inconsistent view definition</td></tr>
+    <tr><td>Duplicate registration returns <strong>409</strong></td><td>The unique constraint no longer reaching the client correctly</td></tr>
+    <tr><td>A second lead lecturer returns <strong>409</strong></td><td>The partial unique index being dropped</td></tr>
+    <tr><td>Over-committing a TA returns <strong>422</strong></td><td>The hour cap in the stored function being bypassed</td></tr>
+    <tr><td>A student reading another student's record returns <strong>403</strong></td><td>A broken row-level guard — a genuine data-protection failure</td></tr>
+    <tr><td>Unknown user and wrong password return identical messages</td><td>Account enumeration creeping back in</td></tr>
+    <tr><td>An unknown key in the body returns <strong>400</strong></td><td>Schemas quietly becoming permissive</td></tr>
+  </tbody>
+</table>
+<p>
+  Several of these assert on the <em>database's</em> behaviour reaching the client
+  intact. That is the point: they would fail if someone "helpfully" reimplemented
+  a rule in TypeScript and let the two definitions diverge.
+</p>
+
+<!-- ══════════════════════════ 9 ══════════════════════════ -->
+<h2 class="page-break">9. Live Demonstration</h2>
+<p>
+  The transcript below was captured from the running service and is reproduced in
+  full in <code>docs/api_demo_output.txt</code>. It shows a successful login, the
+  required deliverable over HTTP, and two rejections.
+</p>
+
+<h4>Obtaining a token</h4>
+<pre>$ curl -s -X POST http://localhost:4000/api/v1/auth/login \
+     -H 'Content-Type: application/json' \
+     -d '{"username":"admin","password":"Password123!"}'
+
+{ "success": true,
+  "data": { "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1l…",
+            "tokenType": "Bearer", "expiresIn": "2h",
+            "user": { "userId": 1, "username": "admin", "role": "admin",
+                      "studentId": null, "lecturerId": null } } }</pre>
+
+<h4>The required deliverable over HTTP</h4>
+<pre>$ curl -s http://localhost:4000/api/v1/fees/outstanding -H "Authorization: Bearer $TOKEN"
+
+Array?           : true
+Students in array: 36
+Source function  : finance.fn_outstanding_fees_json()</pre>
+
+<h4>A student is refused the staff report</h4>
+<pre>$ curl -s http://localhost:4000/api/v1/fees/outstanding -H "Authorization: Bearer $STUDENT_TOKEN"
+
+HTTP 403
+{ "success": false,
+  "error": { "code": "FORBIDDEN",
+             "message": "This endpoint requires one of these roles: admin, lecturer. Your role is student." },
+  "meta": { "path": "/api/v1/fees/outstanding", "method": "GET", "timestamp": "…" } }</pre>
+
+<h4>A database rule enforced through the API</h4>
+<pre>$ curl -s -X POST http://localhost:4000/api/v1/teaching/ta-assignments \
+     -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+     -d '{"lecturerId":4,"taId":3,"semesterId":3,"weeklyHours":40}'
+
+HTTP 422
+{ "success": false,
+  "error": { "code": "CHECK_VIOLATION",
+             "message": "Assignment would put TA 3 at 40 hours/week, above the contracted maximum of 12" },
+  "meta": { "path": "/api/v1/teaching/ta-assignments", "method": "POST", "timestamp": "…" } }</pre>
+<p>
+  That last response is the clearest evidence of the architecture working as
+  intended. Nothing in the TypeScript knows that TA/2025/003 is contracted for
+  twelve hours a week. The API forwarded the request, PostgreSQL refused it with
+  <code>check_violation</code>, and the error handler turned that into a
+  <strong>422</strong> carrying the database's own message.
+</p>
+
+<!-- ══════════════════════════ 10 ══════════════════════════ -->
+<h2>10. Database Scripts and Backup</h2>
+<p>
+  The brief requires this submission to include the scripts used to create the
+  database and a backup of it. Both are in <code>project-2/database/</code>, a
+  copy of the Project 1 scripts so that Project 2 stands alone. It is the
+  <em>same</em> database — built once, used by both.
+</p>
+<table>
+  <thead><tr><th style="width:38%">Path</th><th>Contents</th></tr></thead>
+  <tbody>
+    <tr><td><code>database/00…07_*.sql</code></td><td>Eight ordered scripts: database, schemas, tables, indexes and triggers, functions, views, seed data, verification</td></tr>
+    <tr><td><code>database/run_all.sh</code></td><td>Builds the whole database in one command</td></tr>
+    <tr><td><code>database/backup/cpen208_ceds_backup.sql</code></td><td>Plain SQL, 244 KB — <code>psql -d newdb -f …</code></td></tr>
+    <tr><td><code>database/backup/cpen208_ceds_backup.dump</code></td><td>Custom format, 200 KB — <code>pg_restore -d newdb --no-owner …</code></td></tr>
+    <tr><td><code>database/backup/cpen208_ceds_schema_only.sql</code></td><td>Structure without data</td></tr>
+    <tr><td><code>database/backup/cpen208_ceds_data_only.sql</code></td><td>Data without structure</td></tr>
+  </tbody>
+</table>
+<p>
+  The plain-SQL backup was restored into a scratch database and the required
+  function re-run there, returning all 36 students. A backup that has never been
+  restored is only a hope.
+</p>
+
+<!-- ══════════════════════════ 11 ══════════════════════════ -->
+<h2>11. How to Run It</h2>
+<pre class="light"><span class="c"># 1 — build the database (skip if Project 1 already did this)</span>
+cd project-2/database && ./run_all.sh
+
+<span class="c"># 2 — configure and start the service</span>
+cd ../api
+cp .env.example .env          <span class="c"># set DATABASE_URL and JWT_SECRET</span>
+npm install
+npm run dev                   <span class="c"># http://localhost:4000</span>
+
+<span class="c"># 3 — run the tests</span>
+npm test                      <span class="c"># 43 integration tests</span>
+
+<span class="c"># 4 — explore</span>
+curl http://localhost:4000/api/v1          <span class="c"># self-describing index</span>
+curl http://localhost:4000/api/v1/health   <span class="c"># liveness</span></pre>
+<p>
+  The service performs a database pre-flight check at startup and exits with a
+  clear message if PostgreSQL is unreachable. A service that starts
+  "successfully" and then returns 500 on every request is worse than one that
+  refuses to start.
+</p>
+
+<!-- ══════════════════════════ 12 ══════════════════════════ -->
+<h2>12. Limitations and Future Work</h2>
+<h4>Limitations</h4>
+<ul>
+  <li>Tokens are stateless and therefore not individually revocable before expiry; the two-hour lifetime bounds the exposure. The browser application uses revocable server-side sessions instead.</li>
+  <li>Rate limiting is in-process, so it resets on restart and is not shared across instances. A multi-instance deployment would need a Redis-backed store.</li>
+  <li>The endpoint index is hand-maintained rather than generated; a machine-readable OpenAPI document would be better.</li>
+  <li>List endpoints return complete result sets. At the current scale (36 students) that is correct; at thousands it would need cursor pagination.</li>
+  <li>There is no refresh-token flow, so a client must re-authenticate every two hours.</li>
+</ul>
+<h4>Future work</h4>
+<ul>
+  <li>Generate an OpenAPI 3.1 document from the existing zod schemas, and serve Swagger UI from it — the schemas already contain everything required.</li>
+  <li>Add refresh tokens with rotation and reuse detection.</li>
+  <li>Move rate limiting to a shared store so the service can scale horizontally.</li>
+  <li>Add structured request logging with correlation ids to tie an HTTP request to its <code>app.audit_log</code> rows.</li>
+  <li>Enable PostgreSQL row-level security so the database enforces the "students see only their own rows" rule even if an API guard were ever removed.</li>
+</ul>
+
+<!-- ══════════════════════════ 13 ══════════════════════════ -->
+<h2>13. Conclusion</h2>
+<p>
+  The brief for Project 2 asked for an API that implements the functions created
+  in Project 1. That has been delivered as a versioned REST service exposing 24
+  endpoints across all five required functionalities, with JWT authentication, a
+  role- and row-level authorisation model, strict input validation, a coherent
+  error contract, and 43 passing integration tests.
+</p>
+<p>
+  The defining decision was to treat "implements" as <em>calls</em> rather than
+  <em>reimplements</em>. Every figure the service returns and every rule it
+  enforces comes from a PostgreSQL stored function written in Project 1. The
+  clearest demonstration is the 422 in §9: rejecting an over-committed teaching
+  assistant required no TypeScript at all, because the rule was already in the
+  database and the API's only job was to carry the refusal back to the caller
+  with the right status code.
+</p>
+<p>
+  The result is that the Next.js application from Project 1 and this REST service
+  are two faces of one system rather than two systems that happen to share a
+  database. Neither can quote a different outstanding balance from the other,
+  because neither computes one.
+</p>
+
+<footer class="sig">
+  CPEN 208 · Introduction to Software Engineering · First Semester 2025/2026<br>
+  Gideon Elorm Glago · 22128981 · Department of Computer Engineering, University of Ghana<br>
+  Express 4 · TypeScript 5 · Node.js 24 · PostgreSQL 16.13
+</footer>
+
+</body>
+</html>
